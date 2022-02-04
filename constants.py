@@ -1,0 +1,1 @@
+EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
