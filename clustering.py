@@ -3,9 +3,9 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
-from scipy.stats import ttest_rel, f_oneway
+from scipy.stats import ttest_ind, f_oneway
 import numpy as np
-from itertools import product, combinations
+from itertools import combinations, product
 import matplotlib.pyplot as plt
 
 import warnings
@@ -13,17 +13,17 @@ warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
 NUM_CLUSTERS = 9
-SIGNIFICANCE_LEVEL = 0.01
-NUM_ITERATIONS = 50
+SIGNIFICANCE_LEVEL = 0.99
+NUM_ITERATIONS = 20
 BATCH_SIZE = 200
 
-MODELS = (
-    (KMeans(n_clusters=NUM_CLUSTERS), 'KMeans'),
-    (GaussianMixture(n_components=NUM_CLUSTERS), 'GaussianMixture'),
-    (DBSCAN(eps=100, min_samples=8), 'DBSCAN'),
-    (SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'), 'SpecturalClustering'),
-    (AgglomerativeClustering(n_clusters=NUM_CLUSTERS), 'HierarchialClustering')
-)
+MODELS = [
+    GaussianMixture(n_components=NUM_CLUSTERS),
+    KMeans(n_clusters=NUM_CLUSTERS),
+    DBSCAN(eps=100, min_samples=8),
+    SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
+    AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
+]
 
 def plots(X):
     X_transformed = TSNE(n_components=2, perplexity=20).fit_transform(X)
@@ -33,10 +33,9 @@ def plots(X):
     _, axs = plt.subplots(n, n)
 
     for idx, model in enumerate(MODELS):
-        model, name = model
 
         axs[int(idx / n), idx % n].scatter([x[0] for x in X_transformed], [x[1] for x in X_transformed], c=model.fit_predict(X), s=10)
-        axs[int(idx / n), idx % n].set_title(name)
+        axs[int(idx / n), idx % n].set_title(model.__class__.__name__)
 
     for ax in axs.flat:
         ax.label_outer()
@@ -44,65 +43,71 @@ def plots(X):
     plt.show()
 
 def calculate_dunn_index(clusters):
-    max_cluster_diameter = np.max([np.max([np.linalg.norm(a - b) for a, b in product(c, c)], axis=0) for c in clusters])
+    max_cluster_diameter = np.max([np.max([np.linalg.norm(a - b) for a, b in combinations(c, 2)], axis=0) for c in clusters])
     min_clusters_distance = np.min([
         np.min([
             np.linalg.norm(a - b) for a, b in product(clusters[i], clusters[j])
-        ], axis=0) for i, j in product(range(len(clusters)), range(len(clusters))) if i != j
+        ], axis=0) for i, j in combinations(range(len(clusters)), 2) if i != j
     ])
 
     return min_clusters_distance / max_cluster_diameter
 
+def cluster_and_evaluate(X):
+    evaluation_results = {'silhouette': {}, 'dunn_index': {}}
+
+    for model in MODELS:
+        y_pred = model.fit_predict(X_batch)
+
+        evaluation_results['silhouette'][model] = silhouette_score(X_batch, y_pred)
+        evaluation_results['dunn_index'][model] = calculate_dunn_index([X_batch[y_pred==l] for l in np.unique(y_pred) if l != -1])
+
+    return evaluation_results
+
+def find_best_model(samples_df):
+    best_model = MODELS[0]
+
+    for model in MODELS[1:]:
+        stat, p_val = ttest_ind(samples_df[model], samples_df[best_model])
+        significance = 1 - p_val / 2 if stat > 0 else p_val
+
+        if significance >= SIGNIFICANCE_LEVEL:
+            best_model = model
+
+    return best_model
+
 if __name__ == '__main__':
     df = pd.read_csv('data/data.csv', nrows=1000).drop('caseid', axis=1)
 
-    plots(df.to_numpy())
-
-    tests_data = {
-        'silhouette': {name: [] for _, name in MODELS},
-        'dunn_index': {name: [] for _, name in MODELS}
+    clustering_eval_samples = {
+        'silhouette': pd.DataFrame(),
+        'dunn_index': pd.DataFrame()
     }
 
     for _ in range(NUM_ITERATIONS):
         print(f'Running iteration {_}')
 
         X_batch = df.sample(BATCH_SIZE).to_numpy()
+        clustering_evaluation = cluster_and_evaluate(X_batch)
 
-        for model, name in MODELS:
-            y_pred = model.fit_predict(X_batch)
+        clustering_eval_samples = {
+            method: clustering_eval_samples[method].append(clustering_evaluation[method], ignore_index=True) 
+            for method in clustering_eval_samples
+        }
 
-            tests_data['silhouette'][name].append(silhouette_score(X_batch, y_pred))
-            tests_data['dunn_index'][name].append(calculate_dunn_index(
-                [[X_batch[i] for i in range(BATCH_SIZE) if y_pred[i] == l] for l in np.unique(y_pred)]
-            ))
+    for method in clustering_eval_samples:
+        samples_df = clustering_eval_samples[method]
 
-    for test in tests_data:
-        stat, p_val = f_oneway(*tests_data[test].values())
+        stat, p_val = f_oneway(*samples_df.T.to_numpy())
 
-        print(f'Anova p-value for {test} test: {p_val}')
-
-        if SIGNIFICANCE_LEVEL < p_val:
-            print(f'Accepting anova null hypothesis for {test} test')
+        if p_val > SIGNIFICANCE_LEVEL:
+            print(f'Accepting anova null hypothesis for {method} method, p-val: {p_val}')
 
             continue
 
-        print(f'Rejecting anova null hypothesis for {test} test')
+        print(f'Rejecting anova null hypothesis for {method} method, p_val: {p_val}')
 
-        best_model = None
+        best_model = find_best_model(samples_df)
 
-        for pair in combinations(MODELS, 2):
-            model_1, model_2 = pair[0][1], pair[1][1]
+        print(f'Best model for {method} test: {best_model}')
 
-            stat, p_val = ttest_rel(tests_data[test][model_1], tests_data[test][model_2], alternative='greater')
-
-            better_model = model_1 if SIGNIFICANCE_LEVEL >= p_val else  model_2
-
-            if best_model is None:
-                best_model = better_model
-            else:
-                stat, p_val = ttest_rel(tests_data[test][better_model], tests_data[test][best_model], alternative='greater')
-
-                if SIGNIFICANCE_LEVEL >= p_val:
-                    best_model = better_model
-
-        print(f'Best model for {test} test: {best_model}')
+    plots(df.to_numpy())
