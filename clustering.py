@@ -43,14 +43,17 @@ def plots(X):
     plt.show()
 
 def calculate_dunn_index(clusters):
-    max_cluster_diameter = np.max([np.max([np.linalg.norm(a - b) for a, b in combinations(c, 2)], axis=0) for c in clusters])
-    min_clusters_distance = np.min([
-        np.min([
-            np.linalg.norm(a - b) for a, b in product(clusters[i], clusters[j])
-        ], axis=0) for i, j in combinations(range(len(clusters)), 2) if i != j
-    ])
+    try:
+        max_cluster_diameter = np.max([np.max([np.linalg.norm(a - b) for a, b in combinations(c, 2)], axis=0) for c in clusters])
+        min_clusters_distance = np.min([
+            np.min([
+                np.linalg.norm(a - b) for a, b in product(clusters[i], clusters[j])
+            ], axis=0) for i, j in combinations(range(len(clusters)), 2) if i != j
+        ])
 
-    return min_clusters_distance / max_cluster_diameter
+        return min_clusters_distance / max_cluster_diameter
+    except:
+        pass
 
 def cluster_and_evaluate(X):
     evaluation_results = {'silhouette': {}, 'dunn_index': {}}
