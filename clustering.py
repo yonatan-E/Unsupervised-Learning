@@ -79,7 +79,7 @@ def find_best_model(samples_df):
     return best_model
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/data.csv', nrows=1000).drop('caseid', axis=1)
+    df = pd.read_csv('data/data.csv', nrows=10000).drop('caseid', axis=1)
 
     clustering_eval_samples = {
         'silhouette': pd.DataFrame(),
