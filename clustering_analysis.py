@@ -5,6 +5,7 @@ from sklearn.metrics import silhouette_score
 import numpy as np
 
 from utils import calculate_dunn_index, plot_clusters, perform_statistical_tests
+from constants import SAMPLE_SIZE
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -12,7 +13,6 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 NUM_CLUSTERS = 9
 NUM_ITERATIONS = 20
-BATCH_SIZE = 20000
 
 MODELS = [
     GaussianMixture(n_components=NUM_CLUSTERS),
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     for _ in range(NUM_ITERATIONS):
         print(f'Running iteration {_}')
 
-        X = df.sample(BATCH_SIZE).values
+        X = df.sample(SAMPLE_SIZE).values
         evaluation_results = cluster_and_evaluate(X)
 
         silhouette_results_df = silhouette_results_df.append(evaluation_results['silhouette'])

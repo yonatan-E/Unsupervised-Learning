@@ -41,21 +41,6 @@ def perform_statistical_tests(samples_df, metric):
 
     print(f'Best model for {metric}: {best_model}')
 
-def calculate_dunn_index(X, y):
-    try:
-        clusters = [X[y==l] for l in np.unique(y) if l != -1]
-
-        max_cluster_diameter = np.max([np.max([np.linalg.norm(a - b) for a, b in combinations(c, 2)], axis=0) for c in clusters])
-        min_clusters_distance = np.min([
-            np.min([
-                np.linalg.norm(a - b) for a, b in product(clusters[i], clusters[j])
-            ], axis=0) for i, j in combinations(range(len(clusters)), 2) if i != j
-        ])
-
-        return min_clusters_distance / max_cluster_diameter
-    except:
-        pass
-
 def plot_clusters(X, models):
     X_transformed = TSNE(n_components=2, perplexity=20).fit_transform(X)
 
@@ -72,3 +57,37 @@ def plot_clusters(X, models):
         ax.label_outer()
 
     plt.show()
+
+def delta(ck, cl):
+    values = np.ones([len(ck), len(cl)])*10000
+    
+    for i in range(0, len(ck)):
+        for j in range(0, len(cl)):
+            values[i, j] = np.linalg.norm(ck[i]-cl[j])
+            
+    return np.min(values)
+    
+def big_delta(ci):
+    values = np.zeros([len(ci), len(ci)])
+    
+    for i in range(0, len(ci)):
+        for j in range(0, len(ci)):
+            values[i, j] = np.linalg.norm(ci[i]-ci[j])
+            
+    return np.max(values)
+    
+def calculate_dunn_index(X, y):
+    k_list = [X[y==l] for l in np.unique(y) if l != -1]
+
+    deltas = np.ones([len(k_list), len(k_list)])*1000000
+    big_deltas = np.zeros([len(k_list), 1])
+    l_range = list(range(0, len(k_list)))
+    
+    for k in l_range:
+        for l in (l_range[0:k]+l_range[k+1:]):
+            deltas[k, l] = delta(k_list[k], k_list[l])
+        
+        big_deltas[k] = big_delta(k_list[k])
+
+    di = np.min(deltas)/np.max(big_deltas)
+    return di

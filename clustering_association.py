@@ -5,7 +5,7 @@ from sklearn.metrics import mutual_info_score
 import numpy as np
 
 from utils import plot_clusters, perform_statistical_tests
-from constants import EXTERNAL_FEATURES
+from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -13,7 +13,6 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 NUM_CLUSTERS = 9
 NUM_ITERATIONS = 20
-BATCH_SIZE = 20000
 
 FEATURE = 'dAge'
 
@@ -33,12 +32,12 @@ if __name__ == '__main__':
     for _ in range(NUM_ITERATIONS):
         print(f'Running iteration {_}')
 
-        sample_df = df.sample(BATCH_SIZE)
+        sample_df = df.sample(SAMPLE_SIZE)
         X = sample_df.drop(EXTERNAL_FEATURES, axis=1).values
         external_feature = sample_df[FEATURE]
 
         mutual_info_results_df = mutual_info_results_df.append({
             model: mutual_info_score(external_feature, model.fit_predict(X)) for model in MODELS
-        })
+        }, ignore_index=True)
 
     perform_statistical_tests(mutual_info_results_df, metric='mutual info')
