@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
-NUM_ITERATIONS = 20
+NUM_ITERATIONS = 30
 
 MODEL = GaussianMixture
 PARAM_NAME = 'n_components'
@@ -32,12 +32,17 @@ if __name__ == '__main__':
 
         X = df.sample(SAMPLE_SIZE).values
 
-        silhouette_results_df = silhouette_results_df.append({
-            param: silhouette_score(X, model.fit_predict(X)) for param, model in zip(PARAM_VALUES, models)
-        }, ignore_index=True)
-        dunn_index_results_df = dunn_index_results_df.append({
-            param: calculate_dunn_index(X, model.fit_predict(X)) for param, model in zip(PARAM_VALUES, models)
-        }, ignore_index=True)
+        silhouette, dunn_index = {}, {}
+        for param, model in zip(PARAM_VALUES, models):
+            y_pred = model.fit_predict(X)
+
+            silhouette[param] = silhouette_score(X, y_pred)
+            dunn_index[param] = calculate_dunn_index(X, y_pred)
+
+        silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
+        dunn_index_results_df = dunn_index_results_df.append(dunn_index, ignore_index=True)
+
+        break
 
 silhouette_results_df.to_csv(f'{MODEL.__name__}_silhouette.csv')
 dunn_index_results_df.to_csv(f'{MODEL.__name__}_dunn_index.csv')
