@@ -42,8 +42,6 @@ if __name__ == '__main__':
         silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
         dunn_index_results_df = dunn_index_results_df.append(dunn_index, ignore_index=True)
 
-        break
-
 silhouette_results_df.to_csv(f'{MODEL.__name__}_silhouette.csv')
 dunn_index_results_df.to_csv(f'{MODEL.__name__}_dunn_index.csv')
 
