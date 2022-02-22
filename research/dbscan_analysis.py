@@ -8,7 +8,7 @@ EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
 
 MIN_SAMPLES = 75
 
-df = pd.read_csv('data/original-data.csv')
+df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
 X = df.sample(20000).values
 

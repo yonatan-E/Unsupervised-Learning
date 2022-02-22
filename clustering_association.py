@@ -26,7 +26,7 @@ MODELS = [
 ]
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/original-data.csv')
+    df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
     mutual_info_results_df = pd.DataFrame()
 

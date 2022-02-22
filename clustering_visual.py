@@ -16,7 +16,7 @@ NUM_CLUSTERS = 9
 MODELS = [
     #GaussianMixture(n_components=NUM_CLUSTERS),
     #KMeans(n_clusters=NUM_CLUSTERS),
-    DBSCAN(eps=2000, min_samples=70),
+    DBSCAN(eps=11, min_samples=75),
     #SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
