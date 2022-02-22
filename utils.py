@@ -5,7 +5,7 @@ from itertools import  combinations, product
 import matplotlib.pyplot as plt
 import logging, sys
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='*** %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
 from constants import SIGNIFICANCE_LEVEL
 
@@ -44,16 +44,17 @@ def perform_statistical_tests(samples_df, metric):
 
     logging.info(f'Best model for {metric}: {best_model}')
 
-def plot_clusters(X, models):
-    X_transformed = TSNE(n_components=2, perplexity=20).fit_transform(X)
+def plot_clusters(X, models, embedder=TSNE(n_components=2, perplexity=30)):
+    X_transformed = embedder.fit_transform(X)
 
     n = np.ceil(np.sqrt(len(models) + 1)).astype(int)
 
     _, axs = plt.subplots(n, n)
 
     for idx, model in enumerate(models):
-
-        axs[int(idx / n), idx % n].scatter([x[0] for x in X_transformed], [x[1] for x in X_transformed], c=model.fit_predict(X), s=10)
+        labels = model.fit_predict(X)
+        print(np.unique(labels))
+        axs[int(idx / n), idx % n].scatter([x[0] for x in X_transformed], [x[1] for x in X_transformed], c=labels, s=10)
         axs[int(idx / n), idx % n].set_title(model.__class__.__name__)
 
     for ax in axs.flat:
