@@ -3,6 +3,7 @@ from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClu
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
 import numpy as np
+import logging, sys
 
 from utils import calculate_dunn_index, plot_clusters, perform_statistical_tests
 from constants import SAMPLE_SIZE
@@ -47,6 +48,10 @@ if __name__ == '__main__':
 
         silhouette_results_df = silhouette_results_df.append(evaluation_results['silhouette'])
         dunn_results_df = dunn_results_df.append(evaluation_results['dunn'])
+
+    if len(sys.argv) > 1 and sys.argv[1] == '--save':
+        silhouette_results_df.to_csv('results/clusters_silhouette.csv')
+        dunn_results_df.to_csv('results/clusters_dunn_index.csv')
 
     perform_statistical_tests(silhouette_results_df, metric='silhouette')
     perform_statistical_tests(dunn_results_df, metric='dunn index')

@@ -3,6 +3,7 @@ from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClu
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import mutual_info_score
 import numpy as np
+import logging, sys
 
 from utils import plot_clusters, perform_statistical_tests
 from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     mutual_info_results_df = pd.DataFrame()
 
     for _ in range(NUM_ITERATIONS):
-        print(f'Running iteration {_}')
+        logging.info(f'Running iteration {_}')
 
         sample_df = df.sample(SAMPLE_SIZE)
         X = sample_df.drop(EXTERNAL_FEATURES, axis=1).values
@@ -39,5 +40,8 @@ if __name__ == '__main__':
         mutual_info_results_df = mutual_info_results_df.append({
             model: mutual_info_score(external_feature, model.fit_predict(X)) for model in MODELS
         }, ignore_index=True)
+
+    if len(sys.argv) > 1 and sys.argv[1] == '--save':
+        mutual_info_results_df.to_csv(f'results/clusters_{FEATURE}_mutual_info_.csv')
 
     perform_statistical_tests(mutual_info_results_df, metric='mutual info')
