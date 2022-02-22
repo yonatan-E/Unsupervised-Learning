@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
 
-MIN_SAMPLES = 75
+MIN_SAMPLES = 120
 
 df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 

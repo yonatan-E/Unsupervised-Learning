@@ -18,8 +18,8 @@ NUM_ITERATIONS = 30
 
 MODEL = DBSCAN
 PARAM_NAME = 'eps'
-PARAM_VALUES = range(1200, 1900, 100)
-ADDITIONAL_PARAMS = {'min_samples': 50}
+PARAM_VALUES = range(3, 13)
+ADDITIONAL_PARAMS = {'min_samples': 120}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
