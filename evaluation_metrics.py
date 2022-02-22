@@ -16,12 +16,14 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 NUM_ITERATIONS = 30
 
-MODEL = GaussianMixture
-PARAM_NAME = 'n_components'
-PARAM_VALUES = range(2, 16)
+MODEL = DBSCAN
+PARAM_NAME = 'eps'
+PARAM_VALUES = range(1200, 1900, 100)
+ADDITIONAL_PARAMS = {'min_samples': 50}
 
 if __name__ == '__main__':
-    models = [MODEL(**{PARAM_NAME: param}) for param in PARAM_VALUES]
+    models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
+    print(models)
 
     df = pd.read_csv('data/data.csv').drop('caseid', axis=1)
 

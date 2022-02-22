@@ -11,14 +11,14 @@ from constants import EXTERNAL_FEATURES
 NUM_CLUSTERS = 10
 
 MODELS = [
-    GaussianMixture(n_components=NUM_CLUSTERS),
+    #GaussianMixture(n_components=NUM_CLUSTERS),
     #KMeans(n_clusters=NUM_CLUSTERS),
-    #DBSCAN(eps=600, min_samples=8),
+    DBSCAN(eps=5000, min_samples=70),
     #SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
 
-df = pd.read_csv('data/original-data.csv').sample(30000)
+df = pd.read_csv('data/original-data.csv').sample(20000)
 X = df.drop(EXTERNAL_FEATURES, axis=1)
 
 n = np.ceil(np.sqrt(len(MODELS) + 1)).astype(int)

@@ -4,7 +4,7 @@ from sklearn.cluster import DBSCAN
 from sklearn.neighbors import NearestNeighbors
 import matplotlib.pyplot as plt
 
-MIN_SAMPLES = 50
+MIN_SAMPLES = 75
 
 df = pd.read_csv('data/data.csv').sample(20000).drop('caseid', axis=1)
 
@@ -13,7 +13,7 @@ X = df.sample(20000).values
 neigh = NearestNeighbors(n_neighbors=MIN_SAMPLES).fit(X)
 distances, indices = neigh.kneighbors(X)
 
-avg_distances = distances.mean(axis=1)
+avg_distances = np.mean(distances, axis=1)
 avg_distances = np.sort(avg_distances)
 
 plt.plot(avg_distances, color='blue')
