@@ -16,10 +16,10 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 NUM_ITERATIONS = 30
 
-MODEL = DBSCAN
-PARAM_NAME = 'eps'
-PARAM_VALUES = range(1200, 1900, 100)
-ADDITIONAL_PARAMS = {'min_samples': 50}
+MODEL = GaussianMixture
+PARAM_NAME = 'n_components'
+PARAM_VALUES = range(2, 16)
+ADDITIONAL_PARAMS = {}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
@@ -52,4 +52,5 @@ plt.xticks(fontsize=7, alpha=.7)
 plt.yticks(fontsize=7, alpha=.7)
 plt.xlabel(PARAM_NAME)
 plt.ylabel('Silhouette score')
+plt.title(f'Silhouette score for {MODEL.__name__}')
 plt.show()
