@@ -33,8 +33,8 @@ if __name__ == '__main__':
     for _ in range(NUM_ITERATIONS):
         logging.info(f'Running iteration {_}')
 
-        sample_df = df.sample(SAMPLE_SIZE)
-        X = sample_df.drop(EXTERNAL_FEATURES, axis=1).values
+        sample_df = df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+        X = sample_df.sample(SAMPLE_SIZE).values
         external_feature = sample_df[FEATURE]
 
         mutual_info_results_df = mutual_info_results_df.append({

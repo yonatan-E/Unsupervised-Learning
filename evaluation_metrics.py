@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import logging, sys
 
 from utils import calculate_dunn_index
-from constants import SAMPLE_SIZE
+from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -23,9 +23,8 @@ ADDITIONAL_PARAMS = {'min_samples': 50}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
-    print(models)
 
-    df = pd.read_csv('data/data.csv').drop('caseid', axis=1)
+    df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
     silhouette_results_df = pd.DataFrame()
 

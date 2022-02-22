@@ -6,7 +6,7 @@ import numpy as np
 import logging, sys
 
 from utils import calculate_dunn_index, plot_clusters, perform_statistical_tests
-from constants import SAMPLE_SIZE
+from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -35,7 +35,7 @@ def cluster_and_evaluate(X):
     return evaluation_results
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/data.csv').drop('caseid', axis=1)
+    df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
     silhouette_results_df = pd.DataFrame()
     dunn_results_df = pd.DataFrame()

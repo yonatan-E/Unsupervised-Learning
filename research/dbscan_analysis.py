@@ -4,9 +4,11 @@ from sklearn.cluster import DBSCAN
 from sklearn.neighbors import NearestNeighbors
 import matplotlib.pyplot as plt
 
+EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
+
 MIN_SAMPLES = 75
 
-df = pd.read_csv('data/data.csv').sample(20000).drop('caseid', axis=1)
+df = pd.read_csv('data/original-data.csv')
 
 X = df.sample(20000).values
 

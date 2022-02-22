@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClu
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import mutual_info_score
 
-from constants import EXTERNAL_FEATURES
+from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
 
 NUM_CLUSTERS = 10
 
@@ -18,15 +18,15 @@ MODELS = [
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
 
-df = pd.read_csv('data/original-data.csv').sample(20000)
-X = df.drop(EXTERNAL_FEATURES, axis=1)
+df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+X = df.sample(SAMPLE_SIZE).values
 
 n = np.ceil(np.sqrt(len(MODELS) + 1)).astype(int)
 
 _, axs = plt.subplots(n, n)
 
 for idx, model in enumerate(MODELS):
-    feat, labels = pd.DataFrame({'feat': df['dHispanic'], 'label': model.fit_predict(X.values)}).sort_values('label').T.values
+    feat, labels = pd.DataFrame({'feat': df['dHispanic'], 'label': model.fit_predict(X)}).sort_values('label').T.values
 
     mutual_info = mutual_info_score(feat, labels)
     print(f'mutual info for {model}: {mutual_info}')
