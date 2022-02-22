@@ -11,8 +11,8 @@ class Color(Enum):
 
 color_to_string = {Color.RED:'red', Color.BLUE:'blue', Color.GREEN:'green'}
 
-def basic_two_axis_plot(data, color_, xlabel_, ylabel_, path=None):
-    plt.plot(data, color=color_to_string[color_])
+def basic_two_axis_plot(data_x, data_y, color_, xlabel_, ylabel_, path=None):
+    plt.plot(data_x, data_y, color=color_to_string[color_])
     plt.grid(axis='both', alpha=.3)
     plt.xticks(fontsize=7, alpha=.7)
     plt.yticks(fontsize=7, alpha=.7)
