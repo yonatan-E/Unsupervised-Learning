@@ -16,10 +16,10 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 NUM_ITERATIONS = 30
 
-MODEL = GaussianMixture
-PARAM_NAME = 'n_components'
+MODEL = SpectralClustering
+PARAM_NAME = 'n_clusters'
 PARAM_VALUES = range(2, 16)
-ADDITIONAL_PARAMS = {}
+ADDITIONAL_PARAMS = {'affinity': 'nearest_neighbors', 'random_state': 0}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
