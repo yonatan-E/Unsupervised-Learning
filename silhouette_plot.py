@@ -14,7 +14,7 @@ def plot_model_silhouette(model, axe):
     plt.grid(axis='both', alpha=.3)
     plt.xticks(fontsize=7, alpha=.7)
     plt.yticks(fontsize=7, alpha=.7)
-    plt.xlabel('Number of clusters')
+    plt.xlabel('Number of clusters' if model != 'DBSCAN' else 'Epsilon')
     plt.ylabel('Silhouette score')
     plt.title(f'Silhouette score for {model}')
 
