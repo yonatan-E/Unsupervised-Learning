@@ -32,13 +32,9 @@ if __name__ == '__main__':
 
         X = df.sample(SAMPLE_SIZE).values
 
-        silhouette = {}
-        for model in MODELS:
-            y_pred = model.fit_predict(X)
-
-            silhouette[model] = silhouette_score(X, y_pred)
-
-        silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
+        silhouette_results_df = silhouette_results_df.append({
+            model: silhouette_score(X, model.fit_predict(X)) for model in MODELS
+        }, ignore_index=True)
 
     if len(sys.argv) > 1 and sys.argv[1] == '--save':
         silhouette_results_df.to_csv('results/clusters_silhouette.csv')
