@@ -18,7 +18,7 @@ MODELS = [
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
 
-df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 X = df.sample(SAMPLE_SIZE).values
 
 n = np.ceil(np.sqrt(len(MODELS) + 1)).astype(int)
