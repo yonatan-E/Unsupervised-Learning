@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import logging, sys
 
-from utils import calculate_dunn_index
 from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
 
 import warnings
@@ -25,7 +24,7 @@ ADDITIONAL_PARAMS = {}
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
 
-    df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+    df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
     silhouette_results_df = pd.DataFrame()
 

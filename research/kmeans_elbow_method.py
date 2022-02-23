@@ -5,7 +5,7 @@ import numpy as np
 
 EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
 
-df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
 X = df.sample(20000).values
 

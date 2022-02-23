@@ -35,7 +35,7 @@ def cluster_and_evaluate(X):
     return evaluation_results
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+    df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
     silhouette_results_df = pd.DataFrame()
     dunn_results_df = pd.DataFrame()
