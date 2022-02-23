@@ -1,5 +1,6 @@
 import pandas as pd
-from sklearn.manifold import TSNE, Isomap
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE, Isomap, SpectralEmbedding
 from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 import numpy as np
@@ -16,7 +17,7 @@ NUM_CLUSTERS = 9
 MODELS = [
     #GaussianMixture(n_components=NUM_CLUSTERS),
     #KMeans(n_clusters=NUM_CLUSTERS),
-    DBSCAN(eps=11, min_samples=75),
+    DBSCAN(eps=12, min_samples=120),
     #SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
