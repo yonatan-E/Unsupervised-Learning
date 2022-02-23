@@ -12,12 +12,12 @@ import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
-NUM_CLUSTERS = 9
+NUM_CLUSTERS = 2
 
 MODELS = [
-    #GaussianMixture(n_components=NUM_CLUSTERS),
+    GaussianMixture(n_components=NUM_CLUSTERS),
     #KMeans(n_clusters=NUM_CLUSTERS),
-    DBSCAN(eps=13, min_samples=120),
+    #DBSCAN(eps=13, min_samples=120),
     #SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
