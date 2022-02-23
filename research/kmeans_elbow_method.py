@@ -10,7 +10,7 @@ df = pd.read_csv('data/original-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], 
 X = df.sample(20000).values
 
 model = KMeans()
-visualizer = KElbowVisualizer(model, k=(2, 25))
+visualizer = KElbowVisualizer(model, k=(2, 16))
 
 visualizer.fit(X)
 visualizer.show()
