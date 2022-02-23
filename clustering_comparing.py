@@ -12,7 +12,7 @@ import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
-NUM_ITERATIONS = 20
+NUM_ITERATIONS = 30
 
 MODELS = [
     GaussianMixture(n_components=2),
@@ -41,6 +41,6 @@ if __name__ == '__main__':
         silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
 
     if len(sys.argv) > 1 and sys.argv[1] == '--save':
-        silhouette_results_df.to_csv('results/clusters_silhouette.csv')
+        silhouette_results_df.to_csv('results/clusters_silhouette.csv', index=False)
 
     perform_statistical_tests(silhouette_results_df, metric='silhouette')
