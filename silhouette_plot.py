@@ -18,15 +18,15 @@ def plot_model_silhouette(model, axe):
     plt.ylabel('Silhouette score')
     plt.title(f'Silhouette score for {model}')
 
-f, axs = plt.subplots(2, 3, figsize=(20, 10))
+f, axs = plt.subplots(3, 2, figsize=(10, 15))
 f.subplots_adjust(hspace=.3)
 
 plot_model_silhouette('KMeans', axs[0, 0])
 plot_model_silhouette('GaussianMixture', axs[0, 1])
-plot_model_silhouette('DBSCAN', axs[0, 2])
-plot_model_silhouette('AgglomerativeClustering', axs[1, 0])
-plot_model_silhouette('SpectralClustering', axs[1, 1])
+plot_model_silhouette('DBSCAN', axs[1, 0])
+plot_model_silhouette('AgglomerativeClustering', axs[1, 1])
+plot_model_silhouette('SpectralClustering', axs[2, 0])
 
-f.delaxes(axs[1, 2])
+f.delaxes(axs[2, 1])
 
 plt.savefig('plots/silhouette.svg')
