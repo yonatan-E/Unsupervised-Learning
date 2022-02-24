@@ -13,12 +13,14 @@ import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
+
 NUM_ITERATIONS = 30
 
-MODEL = SpectralClustering
-PARAM_NAME = 'n_clusters'
-PARAM_VALUES = range(2, 16)
-ADDITIONAL_PARAMS = {'affinity': 'nearest_neighbors', 'random_state': 0}
+MODEL = DBSCAN
+PARAM_NAME = 'eps'
+PARAM_VALUES = range(3, 16)
+ADDITIONAL_PARAMS = {'min_samples': 120}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]

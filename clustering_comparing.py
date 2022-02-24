@@ -5,12 +5,14 @@ from sklearn.metrics import silhouette_score
 import numpy as np
 import logging, sys
 
-from utils import calculate_dunn_index, plot_clusters, perform_statistical_tests
+from utils import perform_statistical_tests
 from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
 NUM_ITERATIONS = 30
 
