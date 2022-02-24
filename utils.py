@@ -22,8 +22,8 @@ def find_best_model(samples_df):
             best_model = model
 
             logging.info(f'Rejecting null hypothesis: {model} is better than {best_model}')
-
-        logging.info(f'Accepting null hypothesis: {best_model} is better than {model}')
+        else:
+            logging.info(f'Accepting null hypothesis: {best_model} is better than {model}')
 
     return best_model
 
