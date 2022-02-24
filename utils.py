@@ -5,8 +5,6 @@ from itertools import  combinations, product
 import matplotlib.pyplot as plt
 import logging, sys
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
-
 from constants import SIGNIFICANCE_LEVEL
 
 def find_best_model(samples_df):
