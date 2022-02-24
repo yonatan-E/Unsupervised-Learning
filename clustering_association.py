@@ -12,7 +12,7 @@ import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
-NUM_ITERATIONS = 20
+NUM_ITERATIONS = 30
 
 MODELS = [
     GaussianMixture(n_components=2),

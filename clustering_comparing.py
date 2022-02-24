@@ -17,7 +17,7 @@ NUM_ITERATIONS = 30
 MODELS = [
     GaussianMixture(n_components=2),
     KMeans(n_clusters=3),
-    DBSCAN(eps=13, min_samples=120),
+    DBSCAN(eps=15, min_samples=130),
     SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
     AgglomerativeClustering(n_clusters=3),
 ]
