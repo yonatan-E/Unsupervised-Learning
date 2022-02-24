@@ -14,7 +14,7 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
-NUM_ITERATIONS = 20
+NUM_ITERATIONS = 30
 
 MODELS = [
     GaussianMixture(n_components=2),
