@@ -12,36 +12,38 @@ import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
-NUM_CLUSTERS = 9
 NUM_ITERATIONS = 20
 
-FEATURE = 'dAge'
-
 MODELS = [
-    GaussianMixture(n_components=NUM_CLUSTERS),
-    KMeans(n_clusters=NUM_CLUSTERS),
-    DBSCAN(eps=100, min_samples=8),
-    #SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
-    AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
+    GaussianMixture(n_components=2),
+    KMeans(n_clusters=3),
+    DBSCAN(eps=13, min_samples=120),
+    SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
+    AgglomerativeClustering(n_clusters=3),
 ]
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+    df = pd.read_csv('data/census-data.csv')
 
-    mutual_info_results_df = pd.DataFrame()
+    features_mutual_info = {feat: pd.DataFrame() for feat in EXTERNAL_FEATURES}
 
     for _ in range(NUM_ITERATIONS):
         logging.info(f'Running iteration {_}')
 
-        sample_df = df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
-        X = sample_df.sample(SAMPLE_SIZE).values
-        external_feature = sample_df[FEATURE]
+        sample_df = df.sample(SAMPLE_SIZE)
+        X = sample_df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1).values
 
-        mutual_info_results_df = mutual_info_results_df.append({
-            model: mutual_info_score(external_feature, model.fit_predict(X)) for model in MODELS
-        }, ignore_index=True)
+        y_preds = [model.fit_predict(X) for model in MODELS]
+
+        for feat in EXTERNAL_FEATURES:
+            features_mutual_info[feat] = features_mutual_info[feat].append({
+                model: mutual_info_score(sample_df[feat], y_pred) for model, y_pred in zip(MODELS, y_preds)
+            }, ignore_index=True)
 
     if len(sys.argv) > 1 and sys.argv[1] == '--save':
-        mutual_info_results_df.to_csv(f'results/clusters_{FEATURE}_mutual_info_.csv')
+        for feat in EXTERNAL_FEATURES:
+            features_mutual_info[feat].to_csv(f'results/clusters_{feat}_mutual_info.csv', index=False)
 
-    perform_statistical_tests(mutual_info_results_df, metric='mutual info')
+    for feat in EXTERNAL_FEATURES:
+        logging.info(f'---- PERFORMING STATISTICAL TESTS FOR {feat} mutual info ----')
+        perform_statistical_tests(features_mutual_info[feat], metric=f'{feat} mutual info')
