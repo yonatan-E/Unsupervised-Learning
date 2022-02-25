@@ -13,14 +13,12 @@ import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
-NUM_CLUSTERS = 2
-
 MODELS = [
-    GaussianMixture(n_components=NUM_CLUSTERS),
-    #KMeans(n_clusters=NUM_CLUSTERS),
-    #DBSCAN(eps=13, min_samples=120),
-    #SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
-    #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
+    GaussianMixture(n_components=20),
+    KMeans(n_clusters=20),
+    #DBSCAN(eps=13, min_samples=130),
+    #SpectralClustering(n_clusters=2, n_components=2, affinity='nearest_neighbors'),
+    #AgglomerativeClustering(n_clusters=2),
 ]
 
 if __name__ == '__main__':
@@ -28,6 +26,6 @@ if __name__ == '__main__':
     mca = MCA(n_components=DIMENSIONS, random_state=0)
     X = mca.fit_transform(df.sample(SAMPLE_SIZE)).values
 
-    embedder = TSNE(n_components=2, perplexity=100)
+    embedder = TSNE(n_components=2, perplexity=50)
     #embedder = Isomap(n_components=2)
     plot_clusters(X, MODELS, embedder=embedder)

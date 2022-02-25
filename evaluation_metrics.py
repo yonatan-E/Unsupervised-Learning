@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import logging, sys
 from prince.mca import MCA
+import seaborn as sns
 
 from constants import *
 
@@ -18,10 +19,10 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s -
 
 NUM_ITERATIONS = 30
 
-MODEL = DBSCAN
-PARAM_NAME = 'eps'
-PARAM_VALUES = np.arange(0.2, 1.6, 0.1)
-ADDITIONAL_PARAMS = {'min_samples': 130}
+MODEL = GaussianMixture
+PARAM_NAME = 'n_components'
+PARAM_VALUES = range(2, 26)
+ADDITIONAL_PARAMS = {}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
@@ -49,7 +50,8 @@ if len(sys.argv) > 1 and sys.argv[1] == '--save':
 
 silhouette_scores = silhouette_results_df.mean().values
 
-plt.plot(PARAM_VALUES, silhouette_scores, color='blue')
+sns.set_theme(style="darkgrid")
+sns.lineplot(x=PARAM_VALUES, y=silhouette_scores)
 plt.grid(axis='both', alpha=.3)
 plt.xticks(fontsize=7, alpha=.7)
 plt.yticks(fontsize=7, alpha=.7)
