@@ -15,16 +15,16 @@ mca = MCA(n_components=20, random_state=0)
 X = mca.fit_transform(df.sample(20000)).values
 
 losses = []
-for k in range(2, 20):
+for k in range(2, 26):
     model = KMeans(n_clusters=k)
     model.fit(X)
     losses.append(model.inertia_)
 
 sns.set_theme(style="darkgrid")
-sns.lineplot(x=range(2, 20), y=losses)
+sns.lineplot(x=range(2, 26), y=losses)
 plt.grid(axis='both', alpha=.3)
 plt.xticks(fontsize=7, alpha=.7)
 plt.yticks(fontsize=7, alpha=.7)
 plt.xlabel('Number of clusters')
 plt.ylabel('KMeans cost')
-plt.show()
+plt.savefig('plots/KMeans_elbow_method.svg')

@@ -26,6 +26,6 @@ if __name__ == '__main__':
     mca = MCA(n_components=DIMENSIONS, random_state=0)
     X = mca.fit_transform(df.sample(SAMPLE_SIZE)).values
 
-    #embedder = TSNE(n_components=2, perplexity=100)
-    embedder = Isomap(n_components=2)
+    embedder = TSNE(n_components=2, perplexity=100)
+    #embedder = Isomap(n_components=2)
     plot_clusters(X, MODELS, embedder=embedder)
