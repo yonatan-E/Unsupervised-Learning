@@ -8,7 +8,7 @@ import seaborn as sns
 
 EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
 
-MIN_SAMPLES = 130
+MIN_SAMPLES = 40
 
 df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
