@@ -6,8 +6,9 @@ from sklearn.metrics import silhouette_score
 import numpy as np
 import matplotlib.pyplot as plt
 import logging, sys
+from prince.mca import MCA
 
-from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
+from constants import *
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -19,20 +20,21 @@ NUM_ITERATIONS = 30
 
 MODEL = DBSCAN
 PARAM_NAME = 'eps'
-PARAM_VALUES = range(3, 16)
+PARAM_VALUES = np.arange(0.2, 1.6, 0.1)
 ADDITIONAL_PARAMS = {'min_samples': 130}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
 
     df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+    mca = MCA(n_components=DIMENSIONS, random_state=0)
 
     silhouette_results_df = pd.DataFrame()
 
     for _ in range(NUM_ITERATIONS):
         logging.info(f'Running iteration {_}')
 
-        X = df.sample(SAMPLE_SIZE).values
+        X = mca.fit_transform(df.sample(SAMPLE_SIZE)).values
 
         silhouette = {}
         for param, model in zip(PARAM_VALUES, models):

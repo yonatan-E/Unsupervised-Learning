@@ -4,9 +4,10 @@ from sklearn.mixture import GaussianMixture
 from sklearn.metrics import mutual_info_score
 import numpy as np
 import logging, sys
+from prince.mca import MCA
 
 from utils import perform_statistical_tests
-from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
+from constants import *
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -26,6 +27,7 @@ MODELS = [
 
 if __name__ == '__main__':
     df = pd.read_csv('data/census-data.csv')
+    mca = MCA(n_components=DIMENSIONS, random_state=0)
 
     features_mutual_info = {feat: pd.DataFrame() for feat in EXTERNAL_FEATURES}
 
@@ -33,7 +35,7 @@ if __name__ == '__main__':
         logging.info(f'Running iteration {_}')
 
         sample_df = df.sample(SAMPLE_SIZE)
-        X = sample_df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1).values
+        X = mca.fit_transform(sample_df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)).values
 
         y_preds = [model.fit_predict(X) for model in MODELS]
 

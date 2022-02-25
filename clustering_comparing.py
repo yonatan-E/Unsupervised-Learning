@@ -4,9 +4,10 @@ from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
 import numpy as np
 import logging, sys
+from prince.mca import MCA
 
 from utils import perform_statistical_tests
-from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
+from constants import *
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
@@ -26,13 +27,14 @@ MODELS = [
 
 if __name__ == '__main__':
     df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+    mca = MCA(n_components=DIMENSIONS, random_state=0)
 
     silhouette_results_df = pd.DataFrame()
 
     for _ in range(NUM_ITERATIONS):
         logging.info(f'Running iteration {_}')
 
-        X = df.sample(SAMPLE_SIZE).values
+        X = mca.fit_transform(df.sample(SAMPLE_SIZE)).values
 
         silhouette_results_df = silhouette_results_df.append({
             model: silhouette_score(X, model.fit_predict(X)) for model in MODELS
