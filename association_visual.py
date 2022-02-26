@@ -5,7 +5,7 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import mutual_info_score
-from prince.mca import MCA
+from sklearn.preprocessing import OneHotEncoder
 
 from constants import *
 
@@ -18,9 +18,9 @@ MODELS = [
 ]
 
 df = pd.read_csv('data/census-data.csv').sample(SAMPLE_SIZE)
-mca = MCA(n_components=DIMENSIONS, random_state=0)
+encoder = OneHotEncoder()
 
-X = mca.fit_transform(df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)).values
+X = encoder.fit_transform(df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)).values
 
 n = np.ceil(np.sqrt(len(MODELS) + 1)).astype(int)
 

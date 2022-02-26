@@ -1,3 +1,4 @@
+import pandas as pd
 import numpy as np
 from sklearn.manifold import TSNE
 from scipy.stats import ttest_ind, f_oneway
@@ -45,6 +46,9 @@ def perform_statistical_tests(samples_df, metric):
 
 def plot_clusters(X, models, embedder=TSNE(n_components=2, perplexity=30)):
     X_transformed = embedder.fit_transform(X)
+
+    if isinstance(X_transformed, pd.DataFrame):
+        X_transformed = X_transformed.values
 
     n = np.ceil(np.sqrt(len(models) + 1)).astype(int)
 
