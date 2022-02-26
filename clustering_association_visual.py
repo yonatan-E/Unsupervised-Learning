@@ -5,28 +5,29 @@ from sklearn.manifold import TSNE
 from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import mutual_info_score
+from prince.mca import MCA
 
-from constants import EXTERNAL_FEATURES, SAMPLE_SIZE
-
-NUM_CLUSTERS = 10
+from constants import *
 
 MODELS = [
-    #GaussianMixture(n_components=NUM_CLUSTERS),
-    #KMeans(n_clusters=NUM_CLUSTERS),
-    DBSCAN(eps=5000, min_samples=70),
+    GaussianMixture(n_components=3),
+    #KMeans(n_clusters=21),
+    #DBSCAN(eps=5000, min_samples=70),
     #SpectralClustering(n_clusters=NUM_CLUSTERS, n_components=2, affinity='nearest_neighbors'),
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
 
-df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
-X = df.sample(SAMPLE_SIZE).values
+df = pd.read_csv('data/census-data.csv').sample(SAMPLE_SIZE)
+mca = MCA(n_components=DIMENSIONS, random_state=0)
+
+X = mca.fit_transform(df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)).values
 
 n = np.ceil(np.sqrt(len(MODELS) + 1)).astype(int)
 
 _, axs = plt.subplots(n, n)
 
 for idx, model in enumerate(MODELS):
-    feat, labels = pd.DataFrame({'feat': df['dHispanic'], 'label': model.fit_predict(X)}).sort_values('label').T.values
+    feat, labels = pd.DataFrame({'feat': df['dAge'], 'label': model.fit_predict(X)}).sort_values('label').T.values
 
     mutual_info = mutual_info_score(feat, labels)
     print(f'mutual info for {model}: {mutual_info}')

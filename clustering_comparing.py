@@ -18,11 +18,11 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s -
 NUM_ITERATIONS = 30
 
 MODELS = [
-    GaussianMixture(n_components=2),
-    KMeans(n_clusters=3),
-    DBSCAN(eps=14, min_samples=130),
+    GaussianMixture(n_components=3),
+    KMeans(n_clusters=21),
+    DBSCAN(eps=1.2, min_samples=40),
     SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
-    AgglomerativeClustering(n_clusters=3),
+    AgglomerativeClustering(n_clusters=23),
 ]
 
 if __name__ == '__main__':
