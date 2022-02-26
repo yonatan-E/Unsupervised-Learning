@@ -52,7 +52,9 @@ def plot_clusters(X, models, embedder=TSNE(n_components=2, perplexity=30)):
 
     for idx, model in enumerate(models):
         labels = model.fit_predict(X)
-        print(np.unique(labels))
+
+        logging.info(f'Labels for {model}: {np.unique(labels)}')
+
         axs[int(idx / n), idx % n].scatter([x[0] for x in X_transformed], [x[1] for x in X_transformed], c=labels, s=10)
         axs[int(idx / n), idx % n].set_title(model.__class__.__name__)
 

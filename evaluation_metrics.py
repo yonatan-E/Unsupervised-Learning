@@ -46,7 +46,7 @@ if __name__ == '__main__':
         silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
 
 if len(sys.argv) > 1 and sys.argv[1] == '--save':
-    silhouette_results_df.to_csv(f'results/{MODEL.__name__}_silhouette.csv', index=False)
+    silhouette_results_df.to_csv(f'results/{MODEL.__name__}_silhouette1.csv', index=False)
 
 silhouette_scores = silhouette_results_df.mean().values
 
