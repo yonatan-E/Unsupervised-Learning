@@ -19,10 +19,10 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s -
 
 NUM_ITERATIONS = 30
 
-MODEL = GaussianMixture
-PARAM_NAME = 'n_components'
-PARAM_VALUES = range(2, 26)
-ADDITIONAL_PARAMS = {}
+MODEL = DBSCAN
+PARAM_NAME = 'eps'
+PARAM_VALUES = np.arange(0.6, 3.2, 0.2)
+ADDITIONAL_PARAMS = {'min_samples': 120}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
@@ -46,7 +46,7 @@ if __name__ == '__main__':
         silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
 
 if len(sys.argv) > 1 and sys.argv[1] == '--save':
-    silhouette_results_df.to_csv(f'results/{MODEL.__name__}_silhouette.csv', index=False)
+    silhouette_results_df.to_csv(f'results/{MODEL.__name__}_silhouette1.csv', index=False)
 
 silhouette_scores = silhouette_results_df.mean().values
 

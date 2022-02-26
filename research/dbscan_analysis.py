@@ -8,11 +8,11 @@ import seaborn as sns
 
 EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
 
-MIN_SAMPLES = 40
+MIN_SAMPLES = 120
 
 df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
-mca = MCA(n_components=20, random_state=0)
+mca = MCA(n_components=60, random_state=0)
 
 X = mca.fit_transform(df.sample(20000)).values
 
