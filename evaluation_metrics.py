@@ -17,17 +17,17 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
-NUM_ITERATIONS = 20
+NUM_ITERATIONS = 10
 
-MODEL = KMeans
+MODEL = AgglomerativeClustering
 PARAM_NAME = 'n_clusters'
-PARAM_VALUES = range(2, 25)
+PARAM_VALUES = range(2, 10)
 ADDITIONAL_PARAMS = {}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
 
-    df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+    df = pd.read_csv('data/reduced-census-data.csv')
     encoder = OneHotEncoder()
 
     silhouette_results_df = pd.DataFrame()
@@ -35,7 +35,8 @@ if __name__ == '__main__':
     for _ in range(NUM_ITERATIONS):
         logging.info(f'Running iteration {_}')
 
-        X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
+        #X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
+        X = df.sample(20000).values
 
         silhouette = {}
         for param, model in zip(PARAM_VALUES, models):

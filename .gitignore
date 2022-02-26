@@ -1,4 +1,5 @@
 data/census-data.csv
+data/reduced-census-data.csv
 *.pyc
 .DS_Store
 __pycache__
