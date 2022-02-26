@@ -2,9 +2,9 @@ import pandas as pd
 from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import OneHotEncoder  
 import numpy as np
 import logging, sys
-from prince.mca import MCA
 
 from utils import perform_statistical_tests
 from constants import *
@@ -27,14 +27,14 @@ MODELS = [
 
 if __name__ == '__main__':
     df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
-    mca = MCA(n_components=DIMENSIONS, random_state=0)
+    encoder = OneHotEncoder()
 
     silhouette_results_df = pd.DataFrame()
 
     for _ in range(NUM_ITERATIONS):
         logging.info(f'Running iteration {_}')
 
-        X = mca.fit_transform(df.sample(SAMPLE_SIZE)).values
+        X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
 
         silhouette_results_df = silhouette_results_df.append({
             model: silhouette_score(X, model.fit_predict(X)) for model in MODELS

@@ -2,9 +2,9 @@ import pandas as pd
 from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import mutual_info_score
+from sklearn.preprocessing import OneHotEncoder
 import numpy as np
 import logging, sys
-from prince.mca import MCA
 
 from utils import perform_statistical_tests
 from constants import *
@@ -27,7 +27,7 @@ MODELS = [
 
 if __name__ == '__main__':
     df = pd.read_csv('data/census-data.csv')
-    mca = MCA(n_components=DIMENSIONS, random_state=0)
+    encoder = OneHotEncoder()
 
     features_mutual_info = {feat: pd.DataFrame() for feat in EXTERNAL_FEATURES}
 
@@ -35,7 +35,7 @@ if __name__ == '__main__':
         logging.info(f'Running iteration {_}')
 
         sample_df = df.sample(SAMPLE_SIZE)
-        X = mca.fit_transform(sample_df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)).values
+        X = encoder.fit_transform(sample_df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)).toarray()
 
         y_preds = [model.fit_predict(X) for model in MODELS]
 

@@ -21,7 +21,7 @@ NUM_ITERATIONS = 20
 
 MODEL = DBSCAN
 PARAM_NAME = 'eps'
-PARAM_VALUES = np.arange(4, 6.25, 0.25)
+PARAM_VALUES = np.arange(4, 6.1, 0.1)
 ADDITIONAL_PARAMS = {'min_samples': 720}
 
 if __name__ == '__main__':
@@ -36,7 +36,6 @@ if __name__ == '__main__':
         logging.info(f'Running iteration {_}')
 
         X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
-        print(X, X.shape)
 
         silhouette = {}
         for param, model in zip(PARAM_VALUES, models):
