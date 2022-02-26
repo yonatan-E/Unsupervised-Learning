@@ -17,11 +17,11 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
-NUM_ITERATIONS = 1
+NUM_ITERATIONS = 10
 
-MODEL = KMeans
+MODEL = AgglomerativeClustering
 PARAM_NAME = 'n_clusters'
-PARAM_VALUES = range(2, 25)
+PARAM_VALUES = range(2, 12)
 ADDITIONAL_PARAMS = {}
 
 if __name__ == '__main__':
