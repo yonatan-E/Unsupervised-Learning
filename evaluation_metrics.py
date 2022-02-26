@@ -54,7 +54,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '--save':
 
 silhouette_scores = silhouette_results_df.mean().values
 
-sns.set_theme(style="darkgrid")
+sns.set_style("darkgrid", {"axes.facecolor": ".9"})
 sns.lineplot(x=PARAM_VALUES, y=silhouette_scores)
 plt.grid(axis='both', alpha=.3)
 plt.xticks(fontsize=7, alpha=.7)

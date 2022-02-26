@@ -19,7 +19,7 @@ for n in range(2, 65):
     mca.fit(df)
     inertias.append(mca.total_inertia_)
 
-sns.set_theme(style="darkgrid")
+sns.set_style("darkgrid", {"axes.facecolor": ".9"})
 sns.lineplot(x=range(2, 65), y=inertias)
 plt.xticks(fontsize=7, alpha=.7)
 plt.yticks(fontsize=7, alpha=.7)
