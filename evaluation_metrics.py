@@ -17,11 +17,11 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
-NUM_ITERATIONS = 10
+NUM_ITERATIONS = 15
 
 MODEL = DBSCAN
 PARAM_NAME = 'eps'
-PARAM_VALUES = np.arange(4, 6.1, 0.1)
+PARAM_VALUES = np.arange(4, 5, 0.05)
 ADDITIONAL_PARAMS = {'min_samples': 720}
 
 if __name__ == '__main__':
@@ -49,17 +49,17 @@ if __name__ == '__main__':
 
         silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
 
-if len(sys.argv) > 1 and sys.argv[1] == '--save':
-    silhouette_results_df.to_csv(f'results/{MODEL.__name__}_silhouette.csv', index=False)
+    if len(sys.argv) > 1 and sys.argv[1] == '--save':
+        silhouette_results_df.to_csv(f'results/{MODEL.__name__}_silhouette.csv', index=False)
 
-silhouette_scores = silhouette_results_df.mean().values
+    silhouette_scores = silhouette_results_df.mean().values
 
-sns.set_style("darkgrid", {"axes.facecolor": ".9"})
-sns.lineplot(x=PARAM_VALUES, y=silhouette_scores)
-plt.grid(axis='both', alpha=.3)
-plt.xticks(fontsize=7, alpha=.7)
-plt.yticks(fontsize=7, alpha=.7)
-plt.xlabel(PARAM_NAME)
-plt.ylabel('Silhouette score')
-plt.title(f'Silhouette score for {MODEL.__name__}')
-plt.show()
+    sns.set_style("darkgrid", {"axes.facecolor": ".9"})
+    sns.lineplot(x=PARAM_VALUES, y=silhouette_scores)
+    plt.grid(axis='both', alpha=.3)
+    plt.xticks(fontsize=7, alpha=.7)
+    plt.yticks(fontsize=7, alpha=.7)
+    plt.xlabel(PARAM_NAME)
+    plt.ylabel('Silhouette score')
+    plt.title(f'Silhouette score for {MODEL.__name__}')
+    plt.show()
