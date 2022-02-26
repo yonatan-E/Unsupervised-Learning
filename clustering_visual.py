@@ -15,20 +15,20 @@ warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
 MODELS = [
-    GaussianMixture(n_components=3),
+    #GaussianMixture(n_components=3),
     KMeans(n_clusters=3),
     KMeans(n_clusters=4),
     KMeans(n_clusters=5),
+    KMeans(n_clusters=6)
     #DBSCAN(eps=1.5, min_samples=120),
-    DBSCAN(eps=4.5, min_samples=720),
-    DBSCAN(eps=4.4, min_samples=720),
-    DBSCAN(eps=4.3, min_samples=720),
-    DBSCAN(eps=4.2, min_samples=720),
-    SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
-    SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
-    AgglomerativeClustering(n_clusters=3),
-    AgglomerativeClustering(n_clusters=4),
-    AgglomerativeClustering(n_clusters=5),
+    #DBSCAN(eps=4.5, min_samples=720),
+    #DBSCAN(eps=4.45, min_samples=720),
+    #DBSCAN(eps=4.55, min_samples=720),
+    #SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
+    #SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
+    #AgglomerativeClustering(n_clusters=3),
+    #AgglomerativeClustering(n_clusters=4),
+    #AgglomerativeClustering(n_clusters=5),
 ]
 
 if __name__ == '__main__':
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     enc = OneHotEncoder()
     X = enc.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
 
-    embedder = TSNE(n_components=2, perplexity=30)
-    #embedder = MCA(n_components=2)
+    #embedder = TSNE(n_components=2, perplexity=30)
+    embedder = MCA(n_components=2)
     #embedder = Isomap(n_components=2)
     plot_clusters(X, MODELS, embedder=embedder)

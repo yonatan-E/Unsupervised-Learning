@@ -19,10 +19,10 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s -
 
 NUM_ITERATIONS = 20
 
-MODEL = KMeans
-PARAM_NAME = 'n_clusters'
-PARAM_VALUES = range(2, 25)
-ADDITIONAL_PARAMS = {}
+MODEL = DBSCAN
+PARAM_NAME = 'eps'
+PARAM_VALUES = np.arange(4, 6.1, 0.1)
+ADDITIONAL_PARAMS = {'min_samples': 720}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
@@ -42,10 +42,10 @@ if __name__ == '__main__':
             y_pred = model.fit_predict(X)
 
             labels = np.unique(y_pred)
-            if len(labels) == 1 or (len(labels) == 2 and -1 in labels):
+            if len(labels) == 2 and -1 in labels:
                 silhouette[param] = 0
             else:
-                silhouette[param] = silhouette_score(X[y_pred != -1], y_pred[y_pred != -1])
+                silhouette[param] = silhouette_score(X, y_pred)
 
         silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
 
