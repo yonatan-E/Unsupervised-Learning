@@ -19,10 +19,17 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s -
 
 NUM_ITERATIONS = 20
 
+<<<<<<< HEAD
 MODEL = KMeans
 PARAM_NAME = 'n_clusters'
 PARAM_VALUES = range(2, 25)
 ADDITIONAL_PARAMS = {}
+=======
+MODEL = DBSCAN
+PARAM_NAME = 'eps'
+PARAM_VALUES = np.arange(4, 6.1, 0.1)
+ADDITIONAL_PARAMS = {'min_samples': 720}
+>>>>>>> 1d17aab1006db45512699e5b64628044d98e97e4
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
@@ -36,7 +43,6 @@ if __name__ == '__main__':
         logging.info(f'Running iteration {_}')
 
         X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
-        print(X, X.shape)
 
         silhouette = {}
         for param, model in zip(PARAM_VALUES, models):
