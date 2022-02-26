@@ -19,10 +19,10 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s -
 
 NUM_ITERATIONS = 20
 
-MODEL = DBSCAN
-PARAM_NAME = 'eps'
-PARAM_VALUES = np.arange(4, 6.1, 0.1)
-ADDITIONAL_PARAMS = {'min_samples': 720}
+MODEL = KMeans
+PARAM_NAME = 'n_clusters'
+PARAM_VALUES = range(2, 25)
+ADDITIONAL_PARAMS = {}
 
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
@@ -54,7 +54,7 @@ if len(sys.argv) > 1 and sys.argv[1] == '--save':
 
 silhouette_scores = silhouette_results_df.mean().values
 
-sns.set_theme(style="darkgrid")
+sns.set_style("darkgrid", {"axes.facecolor": ".9"})
 sns.lineplot(x=PARAM_VALUES, y=silhouette_scores)
 plt.grid(axis='both', alpha=.3)
 plt.xticks(fontsize=7, alpha=.7)
