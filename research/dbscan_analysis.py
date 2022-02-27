@@ -5,10 +5,13 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import OneHotEncoder
 import matplotlib.pyplot as plt
 import seaborn as sns
+import random, time
 
 EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
 
 MIN_SAMPLES = 720
+
+np.random.seed(int(time.time()))
 
 df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
 
@@ -28,4 +31,4 @@ plt.xticks(fontsize=7, alpha=.7)
 plt.yticks(fontsize=7, alpha=.7)
 plt.xlabel('Point')
 plt.ylabel(f'Avg distance to {MIN_SAMPLES} nearest neighbors')
-plt.savefig('plots/DBSCAN_evaluation.svg')
+plt.show()
