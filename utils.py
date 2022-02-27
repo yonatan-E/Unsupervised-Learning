@@ -51,7 +51,6 @@ def plot_clusters(X, models, embedder=TSNE(n_components=2, perplexity=30)):
         X_transformed = X_transformed.values
 
     n = np.ceil(np.sqrt(len(models) + 1)).astype(int)
-
     _, axs = plt.subplots(n, n)
 
     for idx, model in enumerate(models):

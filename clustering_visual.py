@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
     enc = OneHotEncoder()
-    X = enc.fit_transform(df.sample(100000)).toarray()
+    X = enc.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
 
     embedder = TSNE(n_components=2, perplexity=30)
     #embedder = MCA(n_components=2)

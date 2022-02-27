@@ -5,30 +5,39 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import OneHotEncoder
 import matplotlib.pyplot as plt
 import seaborn as sns
-import random, time
-
-EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
-
-MIN_SAMPLES = 720
+import time
 
 np.random.seed(int(time.time()))
 
-df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+df = pd.read_csv('data/census-data.csv').drop(['dAge', 'dHispanic', 'iYearwrk', 'iSex', 'caseid'], axis=1)
 
 enc = OneHotEncoder()
 
 X = enc.fit_transform(df.sample(20000))
 
-neigh = NearestNeighbors(n_neighbors=MIN_SAMPLES).fit(X)
-distances, indices = neigh.kneighbors(X)
+fig, ax = plt.subplots(1, 2)
+sns.set_style("darkgrid", {"axes.facecolor": ".9"})
 
+neigh = NearestNeighbors(n_neighbors=720).fit(X)
+distances, indices = neigh.kneighbors(X)
 avg_distances = np.mean(distances, axis=1)
 avg_distances = np.sort(avg_distances)
 
-sns.set_style("darkgrid", {"axes.facecolor": ".9"})
-sns.lineplot(x=range(len(avg_distances)), y=avg_distances)
+sns.lineplot(x=range(len(avg_distances)), y=avg_distances, ax=ax[0])
 plt.xticks(fontsize=7, alpha=.7)
 plt.yticks(fontsize=7, alpha=.7)
 plt.xlabel('Point')
-plt.ylabel(f'Avg distance to {MIN_SAMPLES} nearest neighbors')
-plt.show()
+plt.ylabel('Avg distance to 720 nearest neighbors')
+
+neigh = NearestNeighbors(n_neighbors=15000).fit(X)
+distances, indices = neigh.kneighbors(X)
+avg_distances = np.mean(distances, axis=1)
+avg_distances = np.sort(avg_distances)
+
+sns.lineplot(x=range(len(avg_distances)), y=avg_distances, ax=ax[1])
+plt.xticks(fontsize=7, alpha=.7)
+plt.yticks(fontsize=7, alpha=.7)
+plt.xlabel('Point')
+plt.ylabel('Avg distance to 15000 nearest neighbors')
+
+plt.savefig('plots/k-neighbors.svg')
