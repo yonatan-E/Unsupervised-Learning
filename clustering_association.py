@@ -4,7 +4,7 @@ from sklearn.mixture import GaussianMixture
 from sklearn.metrics import mutual_info_score
 from sklearn.preprocessing import OneHotEncoder
 import numpy as np
-import logging, sys
+import logging, sys, time
 
 from utils import perform_statistical_tests
 from constants import *
@@ -15,13 +15,15 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
-NUM_ITERATIONS = 30
+np.random.seed(int(time.time()))
+
+NUM_ITERATIONS = 20
 
 MODELS = [
-    GaussianMixture(n_components=2),
-    KMeans(n_clusters=3),
-    DBSCAN(eps=14, min_samples=130),
-    SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
+    GaussianMixture(n_components=3),
+    KMeans(n_clusters=4),
+    #DBSCAN(eps=14, min_samples=130),
+    SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
     AgglomerativeClustering(n_clusters=3),
 ]
 
