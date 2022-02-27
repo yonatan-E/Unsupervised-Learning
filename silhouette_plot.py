@@ -4,6 +4,7 @@ from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClu
 from sklearn.mixture import GaussianMixture
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def plot_model_silhouette(model, axe):
     silhouette_results_df = pd.read_csv(f'results/{model}_silhouette.csv')
@@ -23,10 +24,10 @@ f.subplots_adjust(hspace=.3)
 
 plot_model_silhouette('KMeans', axs[0, 0])
 plot_model_silhouette('GaussianMixture', axs[0, 1])
-plot_model_silhouette('DBSCAN', axs[0, 2])
+# plot_model_silhouette('DBSCAN', axs[0, 2])
 plot_model_silhouette('AgglomerativeClustering', axs[1, 0])
 plot_model_silhouette('SpectralClustering', axs[1, 1])
 
 f.delaxes(axs[1, 2])
 
-plt.savefig('plots/silhouette.svg')
+plt.savefig('plots/new_silhouette.svg')
