@@ -56,7 +56,6 @@ if __name__ == '__main__':
 
     sns.set_style("darkgrid", {"axes.facecolor": ".9"})
     sns.lineplot(x=PARAM_VALUES, y=silhouette_scores)
-    plt.grid(axis='both', alpha=.3)
     plt.xticks(fontsize=7, alpha=.7)
     plt.yticks(fontsize=7, alpha=.7)
     plt.xlabel(PARAM_NAME)
