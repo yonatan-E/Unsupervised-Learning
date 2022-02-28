@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.manifold import TSNE, Isomap
 from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
+from prince.mca import MCA
 from sklearn.preprocessing import OneHotEncoder
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -18,21 +19,17 @@ enc = OneHotEncoder()
 X = enc.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
 
 model = GaussianMixture(n_components=3)
-y_pred = model.fit_predict(X)
+labels = model.fit_predict(X)
 
+#embedder = MCA(n_components=2)
 embedder = TSNE(n_components=2, perplexity=30)
-X_transformed = embedder.fit_transform(X)
+points = embedder.fit_transform(X)
 
-sns.set_style("darkgrid", {"axes.facecolor": ".9"})
-sns.scatterplot(
-    x=[x[0] for x in X_transformed], 
-    y=[x[1] for x in X_transformed], 
-    hue=y_pred,
-    palette=sns.color_palette('tab10', 3)
-)
 ax = plt.gca()
-ax.axes.xaxis.set_visible(False)
-ax.axes.yaxis.set_visible(False)
-plt.legend([],[], frameon=False)
-plt.show()
-plt.savefig(f'plots/{model.__class__.__name__}.png')
+ax.set_axisbelow(True)
+ax.grid(True, linestyle='--')
+ax.set_yticklabels([])
+ax.set_xticklabels([])
+ax.scatter(points[:, 0], points[:, 1], c=labels, s=10, alpha=.4)
+
+plt.savefig('plots/GaussianMixture.png')

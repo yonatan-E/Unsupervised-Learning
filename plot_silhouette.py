@@ -10,11 +10,12 @@ def plot_model_silhouette(model, axe):
     silhouette_results_df = pd.read_csv(f'results/{model}_silhouette.csv')
     silhouette_scores = silhouette_results_df.mean().values
 
-    sns.set_style("darkgrid", {"axes.facecolor": ".9"})
     p = sns.lineplot(x=silhouette_results_df.columns[:15], y=silhouette_scores[:15], ax=axe)
     p.set_xlabel('Number of clusters' if model != 'DBSCAN' else 'Epsilon')
     p.set_ylabel('Silhouette score')
     p.set_title(f'Silhouette score for {model}')
+
+sns.set_style("darkgrid", {"axes.facecolor": ".9"})
 
 f, axs = plt.subplots(2, 2, figsize=(15, 10))
 f.subplots_adjust(hspace=.3)
