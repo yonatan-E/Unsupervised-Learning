@@ -15,14 +15,14 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
-NUM_ITERATIONS = 30
+NUM_ITERATIONS = 20
 
 MODELS = [
     GaussianMixture(n_components=3),
-    KMeans(n_clusters=21),
-    DBSCAN(eps=1.2, min_samples=40),
-    SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
-    AgglomerativeClustering(n_clusters=23),
+    KMeans(n_clusters=4),
+    DBSCAN(eps=4.5, min_samples=720),
+    SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
+    AgglomerativeClustering(n_clusters=3),
 ]
 
 if __name__ == '__main__':
