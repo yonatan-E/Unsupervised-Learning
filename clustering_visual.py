@@ -48,7 +48,7 @@ if __name__ == '__main__':
     enc = OneHotEncoder()
     X = enc.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
 
-    embedder = TSNE(n_components=2, perplexity=30)
-    #embedder = MCA(n_components=2)
+    #embedder = TSNE(n_components=2, perplexity=30)
+    embedder = MCA(n_components=2)
     #embedder = Isomap(n_components=2)
     plot_clusters(X, MODELS, embedder=embedder)
