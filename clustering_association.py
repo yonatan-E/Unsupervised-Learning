@@ -22,7 +22,7 @@ NUM_ITERATIONS = 20
 MODELS = [
     GaussianMixture(n_components=3),
     KMeans(n_clusters=4),
-    #DBSCAN(eps=14, min_samples=130),
+    DBSCAN(eps=4.5, min_samples=720),
     SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
     AgglomerativeClustering(n_clusters=3),
 ]
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
         for feat in EXTERNAL_FEATURES:
             features_mutual_info[feat] = features_mutual_info[feat].append({
-                model: mutual_info_score(sample_df[feat], y_pred) for model, y_pred in zip(MODELS, y_preds)
+                model: mutual_info_score(sample_df[feat][y_pred != -1], y_pred[y_pred != -1]) for model, y_pred in zip(MODELS, y_preds)
             }, ignore_index=True)
 
     if len(sys.argv) > 1 and sys.argv[1] == '--save':
