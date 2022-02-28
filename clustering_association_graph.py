@@ -8,7 +8,6 @@ import logging, sys, time
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from utils import perform_statistical_tests
 from constants import *
 
 import warnings
@@ -34,13 +33,13 @@ if __name__ == '__main__':
 
     for model in MODELS:
         results[type(model).__name__] = []
-        for var in EXTERNAL_FEATURES:
+        for var in EXTERNAL_CENSUS_FEATURES:
             data = pd.read_csv(f'results/clusters_{var}_mutual_info.csv')
             mi = data[str(model)].mean()
             results[type(model).__name__].append(mi)
         logging.info(f'\n\nperforming tests for {model}...')
         
-    df = pd.DataFrame(results, index=EXTERNAL_FEATURES)
+    df = pd.DataFrame(results, index=EXTERNAL_CENSUS_FEATURES)
     df['External Feature'] = df.index
     df.index = range(0, 4)
     df = df.melt(id_vars=["External Feature"], var_name="Clustering Method", value_name="Mutual Info")

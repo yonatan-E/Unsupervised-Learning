@@ -11,7 +11,7 @@ import time
 
 np.random.seed(int(time.time()))
 
-df = pd.read_csv('data/census-data.csv').drop(['dAge', 'dHispanic', 'iYearwrk', 'iSex', 'caseid'], axis=1)
+df = pd.read_csv('data/census.csv').drop(['dAge', 'dHispanic', 'iYearwrk', 'iSex', 'caseid'], axis=1)
 
 X = OneHotEncoder().fit_transform(df.sample(5000)).toarray()
 kde = KernelDensity(kernel='gaussian')

@@ -15,7 +15,7 @@ MODELS = [
     #AgglomerativeClustering(n_clusters=NUM_CLUSTERS),
 ]
 
-df = pd.read_csv('data/census-data.csv').sample(20000)
+df = pd.read_csv('data/census.csv').sample(20000)
 encoder = OneHotEncoder()
 
 X = encoder.fit_transform(df.drop(['dAge', 'dHispanic', 'iYearwrk', 'iSex', 'caseid'], axis=1)).values

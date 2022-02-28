@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import logging, sys
 import seaborn as sns
 
+from utils import encode_mixed_data
 from constants import *
 
 import warnings
@@ -17,6 +18,11 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
+assert len(sys.argv) > 1
+
+dataset = sys.argv[1]
+save = len(sys.argv) > 2 and sys.argv[2] == '--save'
+
 NUM_ITERATIONS = 15
 
 MODEL = DBSCAN
@@ -24,33 +30,42 @@ PARAM_NAME = 'eps'
 PARAM_VALUES = np.arange(4, 5, 0.05)
 ADDITIONAL_PARAMS = {'min_samples': 720}
 
+def evaluate_models_silhouette(X, models):
+    silhouette = {}
+    for param, model in zip(PARAM_VALUES, models):
+        y_pred = model.fit_predict(X)
+
+        silhouette[param] = silhouette_score(X, y_pred)
+
+    return silhouette
+
 if __name__ == '__main__':
     models = [MODEL(**{PARAM_NAME: param}, **ADDITIONAL_PARAMS) for param in PARAM_VALUES]
 
-    df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
-    encoder = OneHotEncoder()
+    if dataset == 'census':
+        df = pd.read_csv('data/census.csv').drop(EXTERNAL_CENSUS_FEATURES + ['caseid'], axis=1)
+        encoder = OneHotEncoder()
 
-    silhouette_results_df = pd.DataFrame()
+        silhouette_results_df = pd.DataFrame()
+        for _ in range(NUM_ITERATIONS):
+            logging.info(f'Running iteration {_}')
 
-    for _ in range(NUM_ITERATIONS):
-        logging.info(f'Running iteration {_}')
+            X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
+            silhouette_results_df = silhouette_results_df.append(
+                evaluate_models_silhouette(X, models),
+                ignore_index=True
+            )
 
-        X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
+    elif dataset == 'shoppers':
+        df = pd.read_csv('data/online-shoppers-intention.csv') \
+            .astype(SHOPPERS_DATA_TYPES) \
+            .drop(EXTERNAL_SHOPPERS_FEATURES, axis=1)
+        X = encode_mixed_data(df)
 
-        silhouette = {}
-        for param, model in zip(PARAM_VALUES, models):
-            y_pred = model.fit_predict(X)
+        silhouette_results_df = pd.DataFrame(evaluate_models_silhouette(X, models))
 
-            labels = np.unique(y_pred)
-            if len(labels) == 2 and -1 in labels:
-                silhouette[param] = 0
-            else:
-                silhouette[param] = silhouette_score(X, y_pred)
-
-        silhouette_results_df = silhouette_results_df.append(silhouette, ignore_index=True)
-
-    if len(sys.argv) > 1 and sys.argv[1] == '--save':
-        silhouette_results_df.to_csv(f'results/{MODEL.__name__}_silhouette.csv', index=False)
+    if save:
+        silhouette_results_df.to_csv(f'results/{dataset}/{MODEL.__name__}_silhouette.csv', index=False)
 
     silhouette_scores = silhouette_results_df.mean().values
 
