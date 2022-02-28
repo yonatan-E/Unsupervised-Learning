@@ -36,7 +36,7 @@ if __name__ == '__main__':
     for model in MODELS:
         model_df = pd.DataFrame({})
         results[type(model).__name__] = []
-        for var in EXTERNAL_FEATURES:
+        for var in EXTERNAL_CENSUS_FEATURES:
             data = pd.read_csv(f'results/clusters_{var}_mutual_info.csv')
             model_df[var] = data[str(model)]
             mi = data[str(model)].mean()
@@ -44,7 +44,7 @@ if __name__ == '__main__':
         logging.info(f'\n\nperforming tests for {model}...')
         perform_statistical_tests(model_df, metric=str(model))
         
-    df = pd.DataFrame(results, index=EXTERNAL_FEATURES)
+    df = pd.DataFrame(results, index=EXTERNAL_CENSUS_FEATURES)
     df['External Feature'] = df.index
     df.index = range(0, 4)
     df = df.melt(id_vars=["External Feature"], var_name="Clustering Method", value_name="Mutual Info")

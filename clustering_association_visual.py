@@ -35,11 +35,11 @@ def plot_clustering_association(points, labels, feature, axe):
     legend = axe.legend(*scatter.legend_elements(), loc='upper right', title='Class')
     axe.add_artist(legend)
 
-df = pd.read_csv('data/census-data.csv')
+df = pd.read_csv('data/census.csv')
 sample_df = df.sample(SAMPLE_SIZE)
 
 enc = OneHotEncoder()
-X = enc.fit_transform(sample_df.drop(EXTERNAL_FEATURES + ['caseid'], axis=1)).toarray()
+X = enc.fit_transform(sample_df.drop(EXTERNAL_CENSUS_FEATURES + ['caseid'], axis=1)).toarray()
 
 embedder = TSNE(n_components=2, perplexity=60)
 #embedder = MCA(n_components=2)

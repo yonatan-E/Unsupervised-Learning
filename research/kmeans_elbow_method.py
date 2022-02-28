@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import time
 
-EXTERNAL_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
+EXTERNAL_CENSUS_FEATURES = ['dAge', 'dHispanic', 'iYearwrk', 'iSex']
 
 np.random.seed(int(time.time()))
 
-df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+df = pd.read_csv('data/census.csv').drop(EXTERNAL_CENSUS_FEATURES + ['caseid'], axis=1)
 
 enc = OneHotEncoder()
 

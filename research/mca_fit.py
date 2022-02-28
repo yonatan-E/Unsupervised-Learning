@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import logging, sys
 
-from constants import EXTERNAL_FEATURES
+from constants import EXTERNAL_CENSUS_FEATURES
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s - %(message)s', datefmt="%Y-%m-%d %H:%M:%S")
 
-df = pd.read_csv('data/census-data.csv').sample(200000).drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
+df = pd.read_csv('data/census.csv').sample(200000).drop(EXTERNAL_CENSUS_FEATURES + ['caseid'], axis=1)
 
 inertias = []
 

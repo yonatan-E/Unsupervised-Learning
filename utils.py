@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 from sklearn.manifold import TSNE
+from sklearn.preprocessing import minmax_scale, OneHotEncoder
 from scipy.stats import ttest_ind, f_oneway
 from itertools import  combinations, product
 import matplotlib.pyplot as plt
 import logging, sys
 
-from constants import SIGNIFICANCE_LEVEL
+from constants import *
 
 def find_best_model(samples_df):
     models = samples_df.columns
@@ -66,36 +67,13 @@ def plot_clusters(X, models, embedder=TSNE(n_components=2, perplexity=30)):
 
     plt.show()
 
-def delta(ck, cl):
-    values = np.ones([len(ck), len(cl)])*10000
-    
-    for i in range(0, len(ck)):
-        for j in range(0, len(cl)):
-            values[i, j] = np.linalg.norm(ck[i]-cl[j])
-            
-    return np.min(values)
-    
-def big_delta(ci):
-    values = np.zeros([len(ci), len(ci)])
-    
-    for i in range(0, len(ci)):
-        for j in range(0, len(ci)):
-            values[i, j] = np.linalg.norm(ci[i]-ci[j])
-            
-    return np.max(values)
-    
-def calculate_dunn_index(X, y):
-    k_list = [X[y==l] for l in np.unique(y) if l != -1]
+def encode_mixed_data(df, normalize=True):
+    numeric_cols = df.select_dtypes(include=np.number).values
+    categorial_cols = df.select_dtypes(include='object').values
 
-    deltas = np.ones([len(k_list), len(k_list)])*1000000
-    big_deltas = np.zeros([len(k_list), 1])
-    l_range = list(range(0, len(k_list)))
-    
-    for k in l_range:
-        for l in (l_range[0:k]+l_range[k+1:]):
-            deltas[k, l] = delta(k_list[k], k_list[l])
-        
-        big_deltas[k] = big_delta(k_list[k])
+    numeric_part = minmax_scale(numeric_cols) if normalize else numeric_cols
 
-    di = np.min(deltas)/np.max(big_deltas)
-    return di
+    categorial_one_hot = OneHotEncoder().fit_transform(categorial_cols).toarray()
+    categorial_part = minmax_scale(categorial_one_hot) if normalize else categorial_one_hot
+
+    return np.concatenate([numeric_part, categorial_part], axis=1)
