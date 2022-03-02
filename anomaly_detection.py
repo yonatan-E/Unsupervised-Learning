@@ -1,32 +1,41 @@
-from tarfile import POSIX_MAGIC
 import pandas as pd
-from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE, Isomap, SpectralEmbedding
-from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
-from sklearn.mixture import GaussianMixture
-from sklearn.preprocessing import MinMaxScaler
 import numpy as np
+from sklearn.manifold import TSNE
+from sklearn.cluster import DBSCAN
 from prince.mca import MCA
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.svm import OneClassSVM
-import random, time
-import seaborn as sns
-
 import matplotlib.pyplot as plt
-from utils import plot_clusters
+import seaborn as sns
+import sys, time
+
+assert len(sys.argv) > 1
+
+dataset = sys.argv[1]
+
+from utils import encode_mixed_data
 from constants import *
 
 import warnings
 warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=UserWarning)
 
-MODELS = [
-    DBSCAN(eps=5.5, min_samples=720),
-    OneClassSVM(kernel='rbf', gamma='scale', nu=0.1),
-]
+np.random.seed(int(time.time()))
+
+if dataset == 'census':
+    EXTERNAL_FEATURES = EXTERNAL_CENSUS_FEATURES
+    MODELS = [
+        DBSCAN(eps=5.5, min_samples=720),
+        OneClassSVM(kernel='rbf', gamma='scale', nu=0.1),
+    ]
+elif dataset == 'shoppers':
+    EXTERNAL_FEATURES = EXTERNAL_SHOPPERS_FEATURES
+    MODELS = [
+        DBSCAN(eps=5.5, min_samples=720),
+        OneClassSVM(kernel='rbf', gamma='scale', nu=0.1),
+    ]
 
 def plot_model(model, x, points, axe):
-
     labels = model.fit_predict(x)
 
     axe.set_axisbelow(True)
@@ -40,14 +49,20 @@ def plot_model(model, x, points, axe):
     axe.set_title(f'anomaly detection for {model.__class__.__name__}', fontsize=16)
 
 if __name__ == '__main__':
-    np.random.seed(int(time.time()))
+    if dataset == 'census':
+        df = pd.read_csv('data/census.csv').drop(EXTERNAL_CENSUS_FEATURES + ['caseid'], axis=1)
+        X = OneHotEncoder().fit_transform(df.sample(5000)).toarray()
 
-    df = pd.read_csv('data/census-data.csv').drop(EXTERNAL_FEATURES + ['caseid'], axis=1)
-    enc = OneHotEncoder()
-    X = enc.fit_transform(df.sample(5000)).toarray()
+        embedder = MCA(n_components=2)
+        points = embedder.fit_transform(X).values
+    elif dataset == 'shoppers':
+        df = pd.read_csv('data/online-shoppers-intention.csv') \
+            .astype(SHOPPERS_DATA_TYPES) \
+            .drop(EXTERNAL_SHOPPERS_FEATURES, axis=1)
+        X = encode_mixed_data(df)
 
-    embedder = MCA(n_components=2)
-    points = embedder.fit_transform(X).values
+        embedder = TSNE(n_components=2)
+        points = embedder.fit_transform(X)
 
     f, axs = plt.subplots(1, 2, figsize=(23, 10))
     f.subplots_adjust(hspace=.3)
@@ -55,5 +70,5 @@ if __name__ == '__main__':
     plot_model(MODELS[0], X, points, axs[0])
     plot_model(MODELS[1], X, points, axs[1])
         
-    plt.savefig('plots/anomaly_plots.png')
-    plt.savefig('plots/anomaly_plots.svg')
+    plt.savefig(f'plots/{dataset}/anomaly_plots.png')
+    plt.savefig(f'plots/{dataset}/anomaly_plots.svg')
