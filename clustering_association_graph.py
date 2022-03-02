@@ -42,7 +42,6 @@ elif dataset == 'shoppers':
     MODELS = [
         GaussianMixture(n_components=3),
         KMeans(n_clusters=2),
-        #DBSCAN(eps=0.8, min_samples=100),
         SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
         AgglomerativeClustering(n_clusters=2),
     ]
