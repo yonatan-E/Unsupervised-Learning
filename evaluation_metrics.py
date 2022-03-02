@@ -23,12 +23,10 @@ assert len(sys.argv) > 1
 dataset = sys.argv[1]
 save = len(sys.argv) > 2 and sys.argv[2] == '--save'
 
-NUM_ITERATIONS = 15
-
-MODEL = DBSCAN
-PARAM_NAME = 'eps'
-PARAM_VALUES = np.arange(4, 5, 0.05)
-ADDITIONAL_PARAMS = {'min_samples': 720}
+MODEL = GaussianMixture
+PARAM_NAME = 'n_components'
+PARAM_VALUES = range(2, 16)
+ADDITIONAL_PARAMS = {}
 
 def evaluate_models_silhouette(X, models):
     silhouette = {}
@@ -47,7 +45,7 @@ if __name__ == '__main__':
         encoder = OneHotEncoder()
 
         silhouette_results_df = pd.DataFrame()
-        for _ in range(NUM_ITERATIONS):
+        for _ in range(20):
             logging.info(f'Running iteration {_}')
 
             X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()
@@ -62,7 +60,7 @@ if __name__ == '__main__':
             .drop(EXTERNAL_SHOPPERS_FEATURES, axis=1)
         X = encode_mixed_data(df)
 
-        silhouette_results_df = pd.DataFrame(evaluate_models_silhouette(X, models))
+        silhouette_results_df = pd.DataFrame([evaluate_models_silhouette(X, models)])
 
     if save:
         silhouette_results_df.to_csv(f'results/{dataset}/{MODEL.__name__}_silhouette.csv', index=False)

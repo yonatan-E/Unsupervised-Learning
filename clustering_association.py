@@ -26,7 +26,7 @@ NUM_ITERATIONS = 20
 
 if dataset == 'census':
     SAMPLE_SIZE = 20000
-    EXTERNAL_FEATURES = EXTERNAL_SHOPPERS_FEATURES
+    EXTERNAL_FEATURES = EXTERNAL_CENSUS_FEATURES
     MODELS = [
         GaussianMixture(n_components=3),
         KMeans(n_clusters=4),
@@ -36,13 +36,12 @@ if dataset == 'census':
     ]
 elif dataset == 'shoppers':
     SAMPLE_SIZE = 1000
-    EXTERNAL_FEATURES = EXTERNAL_CENSUS_FEATURES
+    EXTERNAL_FEATURES = EXTERNAL_SHOPPERS_FEATURES
     MODELS = [
-        GaussianMixture(n_components=3),
-        KMeans(n_clusters=4),
-        DBSCAN(eps=4.5, min_samples=720),
-        SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
-        AgglomerativeClustering(n_clusters=3),
+       GaussianMixture(n_components=3),
+       KMeans(n_clusters=2),
+       SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
+       AgglomerativeClustering(n_clusters=2),
     ]
 
 if __name__ == '__main__':

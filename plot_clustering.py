@@ -28,12 +28,12 @@ elif dataset == 'shoppers':
         .drop(EXTERNAL_SHOPPERS_FEATURES, axis=1)
     X = encode_mixed_data(df)
 
-model = DBSCAN(eps=5, min_samples=200)
+model = KMeans(n_clusters=2)
 labels = model.fit_predict(X)
 
 #embedder = MCA(n_components=2)
 embedder = TSNE(n_components=2, perplexity=30)
-points = embedder.fit_transform(X).values
+points = embedder.fit_transform(X)
 
 ax = plt.gca()
 ax.set_axisbelow(True)
@@ -42,5 +42,6 @@ ax.set_yticklabels([])
 ax.set_xticklabels([])
 ax.scatter(points[:, 0], points[:, 1], c=labels, s=10, alpha=.4)
 
-plt.show()
+#plt.show()
 plt.savefig(f'plots/{dataset}/{model.__class__.__name__}.png')
+plt.savefig(f'plots/{dataset}/{model.__class__.__name__}.svg')

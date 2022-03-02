@@ -5,6 +5,11 @@ from sklearn.mixture import GaussianMixture
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import sys
+
+assert len(sys.argv) > 1
+
+dataset = sys.argv[1]
 
 def plot_model_silhouette(model, axe):
     silhouette_results_df = pd.read_csv(f'results/{model}_silhouette.csv')
@@ -25,4 +30,4 @@ plot_model_silhouette('GaussianMixture', axs[0, 1])
 plot_model_silhouette('AgglomerativeClustering', axs[1, 0])
 plot_model_silhouette('SpectralClustering', axs[1, 1])
 
-f.savefig('plots/silhouette.svg')
+f.savefig(f'plots/{dataset}/silhouette.svg')
