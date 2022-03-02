@@ -25,24 +25,43 @@ dataset = sys.argv[1]
 np.random.seed(int(time.time()))
 
 MODELS = [
-    GaussianMixture(n_components=2),
     GaussianMixture(n_components=3),
     KMeans(n_clusters=2),
-    KMeans(n_clusters=3),
-    KMeans(n_clusters=4),
-    KMeans(n_clusters=5),
-    KMeans(n_clusters=6),
-    DBSCAN(eps=1.5, min_samples=150),
-    DBSCAN(eps=1.75, min_samples=150),
-    DBSCAN(eps=2, min_samples=150),
-    DBSCAN(eps=2.25, min_samples=150),
     SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
-    SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
-    SpectralClustering(n_clusters=4, affinity='nearest_neighbors', random_state=0),
     AgglomerativeClustering(n_clusters=2),
-    AgglomerativeClustering(n_clusters=3),
-    AgglomerativeClustering(n_clusters=4),
-    AgglomerativeClustering(n_clusters=5),
+    # GaussianMixture(n_components=2),
+    # GaussianMixture(n_components=3),
+    # KMeans(n_clusters=2),
+    # KMeans(n_clusters=3),
+    # KMeans(n_clusters=4),
+    # KMeans(n_clusters=5),
+    # KMeans(n_clusters=6),
+    # KMeans(n_clusters=7),
+    # KMeans(n_clusters=8),
+    # DBSCAN(eps=0.1, min_samples=100),
+    # DBSCAN(eps=0.2, min_samples=100),
+    # DBSCAN(eps=0.3, min_samples=100),
+    # DBSCAN(eps=0.4, min_samples=100),
+    # DBSCAN(eps=0.5, min_samples=100),
+    # DBSCAN(eps=0.6, min_samples=100),
+    # DBSCAN(eps=0.7, min_samples=100),
+    # DBSCAN(eps=0.8, min_samples=100),
+    # DBSCAN(eps=0.9, min_samples=100),
+    # DBSCAN(eps=1, min_samples=100),
+    # DBSCAN(eps=1.3, min_samples=100),
+    # DBSCAN(eps=1.6, min_samples=100),
+    # DBSCAN(eps=1.9, min_samples=100),
+    # DBSCAN(eps=2, min_samples=100),
+    # DBSCAN(eps=2.1, min_samples=100),
+    # DBSCAN(eps=2.3, min_samples=100),
+    # DBSCAN(eps=2.5, min_samples=100),
+    # SpectralClustering(n_clusters=2, affinity='nearest_neighbors', random_state=0),
+    # SpectralClustering(n_clusters=3, affinity='nearest_neighbors', random_state=0),
+    # SpectralClustering(n_clusters=4, affinity='nearest_neighbors', random_state=0),
+    # AgglomerativeClustering(n_clusters=2),
+    # AgglomerativeClustering(n_clusters=3),
+    # AgglomerativeClustering(n_clusters=4),
+    # AgglomerativeClustering(n_clusters=5),
 ]
 
 if __name__ == '__main__':
@@ -55,4 +74,4 @@ if __name__ == '__main__':
             .drop(EXTERNAL_SHOPPERS_FEATURES, axis=1)
         X = encode_mixed_data(df)
 
-    plot_clusters(X, MODELS, embedder=TSNE(n_components=2, perplexity=30))
+    plot_clusters(X, MODELS, embedder=TSNE(n_components=2))

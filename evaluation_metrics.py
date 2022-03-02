@@ -23,8 +23,8 @@ assert len(sys.argv) > 1
 dataset = sys.argv[1]
 save = len(sys.argv) > 2 and sys.argv[2] == '--save'
 
-MODEL = KMeans
-PARAM_NAME = 'n_clusters'
+MODEL = GaussianMixture
+PARAM_NAME = 'n_components'
 PARAM_VALUES = range(2, 16)
 ADDITIONAL_PARAMS = {}
 

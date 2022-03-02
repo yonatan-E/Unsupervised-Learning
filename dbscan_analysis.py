@@ -38,6 +38,5 @@ plt.xticks(fontsize=7, alpha=.7)
 plt.yticks(fontsize=7, alpha=.7)
 plt.xlabel('Point')
 plt.ylabel(f'Avg distance to {min_samples} nearest neighbors')
-plt.show()
 
 plt.savefig(f'plots/{dataset}/k-neighbors.svg')
