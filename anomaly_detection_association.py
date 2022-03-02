@@ -20,13 +20,30 @@ np.random.seed(int(time.time()))
 
 NUM_ITERATIONS = 20
 
-MODELS = [
+assert len(sys.argv) > 1
+
+dataset = sys.argv[1]
+save = len(sys.argv) > 2 and sys.argv[2] == '--save'
+
+if dataset == 'census':
+    SAMPLE_SIZE = 20000
+    EXTERNAL_FEATURES = EXTERNAL_CENSUS_FEATURES
+    MODELS = [
     DBSCAN(eps=5.5, min_samples=720),
     OneClassSVM(kernel='rbf', gamma='scale', nu=0.1),
-]
+    ]
+
+elif dataset == 'shoppers':
+    SAMPLE_SIZE = 1000
+    EXTERNAL_FEATURES = EXTERNAL_SHOPPERS_FEATURES
+    MODELS = [
+    DBSCAN(eps=5.5, min_samples=720),
+    OneClassSVM(kernel='rbf', gamma='scale', nu=0.1),
+    ]   
 
 
 if __name__ == '__main__':
+
     df = pd.read_csv('data/census-data.csv')
 
     features_mutual_info = {feat: pd.DataFrame() for feat in EXTERNAL_FEATURES}
@@ -48,7 +65,7 @@ if __name__ == '__main__':
 
     if len(sys.argv) > 1 and sys.argv[1] == '--save':
         for feat in EXTERNAL_FEATURES:
-            features_mutual_info[feat].to_csv(f'results/anomaly_{feat}_mutual_info.csv', index=False)
+            features_mutual_info[feat].to_csv(f'results/{dataset}/anomaly_{feat}_mutual_info.csv', index=False)
 
     for feat in EXTERNAL_FEATURES:
         logging.info(f'---- PERFORMING STATISTICAL TESTS FOR {feat} mutual info ----')
