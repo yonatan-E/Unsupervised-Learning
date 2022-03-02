@@ -12,7 +12,7 @@ assert len(sys.argv) > 1
 dataset = sys.argv[1]
 
 def plot_model_silhouette(model, axe):
-    silhouette_results_df = pd.read_csv(f'results/{model}_silhouette.csv')
+    silhouette_results_df = pd.read_csv(f'results/{dataset}/{model}_silhouette.csv')
     silhouette_scores = silhouette_results_df.mean().values
 
     p = sns.lineplot(x=silhouette_results_df.columns[:15], y=silhouette_scores[:15], ax=axe)

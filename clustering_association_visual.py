@@ -29,7 +29,7 @@ def plot_clustering_association(points, labels, feature, axe):
             x = [point[0], center[0]]
             y = [point[1], center[1]]
 
-            axe.plot(x, y, '#e8e2c6', alpha=0.016, linewidth=2)
+            axe.plot(x, y, '#e8e2c6', alpha=0.03, linewidth=2)
 
     axe.set_axisbelow(True)
     axe.grid(True, linestyle='--')
@@ -76,8 +76,6 @@ if dataset == 'shoppers':
     labels = model.fit_predict(X)
 
     plot_clustering_association(points, labels, df['Revenue'], axe)
-    axe.set_title('Gaussian Mixture Model clusters association with Revenue external feature')
 
-    # plt.show(f'plots/{dataset}/clustering_Revenue_association.png')
-    # plt.show(f'plots/{dataset}/clustering_Revenue_association.svg')
-    plt.show()
+    plt.savefig(f'plots/{dataset}/clustering_Revenue_association.png')
+    plt.savefig(f'plots/{dataset}/clustering_Revenue_association.svg')
