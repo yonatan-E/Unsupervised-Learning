@@ -1,0 +1,24 @@
+---- PERFORMING STATISTICAL TESTS FOR dAge mutual info ----
+2022-02-28 23:53:03 - Anova p-val for dAge mutual info: 7.029239877077087e-19
+2022-02-28 23:53:03 - Rejecting anova null hypothesis for dAge mutual info
+2022-02-28 23:53:03 - T-test for OneClassSVM | DBSCAN: p-val - 7.02923987707699e-19, stat - 16.45748182666703
+2022-02-28 23:53:03 - Rejecting null hypothesis: OneClassSVM is better than DBSCAN
+2022-02-28 23:53:03 - Best model for dAge mutual info: OneClassSVM
+2022-02-28 23:53:03 - ---- PERFORMING STATISTICAL TESTS FOR dHispanic mutual info ----
+2022-02-28 23:53:03 - Anova p-val for dHispanic mutual info: 5.644322257983438e-26
+2022-02-28 23:53:03 - Rejecting anova null hypothesis for dHispanic mutual info
+2022-02-28 23:53:03 - T-test for OneClassSVM | DBSCAN: p-val - 5.644322257983255e-26, stat - 26.274588260760396
+2022-02-28 23:53:03 - Rejecting null hypothesis: OneClassSVM is better than DBSCAN
+2022-02-28 23:53:03 - Best model for dHispanic mutual info: OneClassSVM
+2022-02-28 23:53:03 - ---- PERFORMING STATISTICAL TESTS FOR iYearwrk mutual info ----
+2022-02-28 23:53:03 - Anova p-val for iYearwrk mutual info: 1.888336567633441e-13
+2022-02-28 23:53:03 - Rejecting anova null hypothesis for iYearwrk mutual info
+2022-02-28 23:53:03 - T-test for OneClassSVM | DBSCAN: p-val - 1.8883365676333848e-13, stat - 11.068264505083224
+2022-02-28 23:53:03 - Rejecting null hypothesis: OneClassSVM is better than DBSCAN
+2022-02-28 23:53:03 - Best model for iYearwrk mutual info: OneClassSVM
+2022-02-28 23:53:03 - ---- PERFORMING STATISTICAL TESTS FOR iSex mutual info ----
+2022-02-28 23:53:03 - Anova p-val for iSex mutual info: 2.0940375061697194e-05
+2022-02-28 23:53:03 - Rejecting anova null hypothesis for iSex mutual info
+2022-02-28 23:53:03 - T-test for OneClassSVM | DBSCAN: p-val - 2.0940375061697225e-05, stat - 4.853786786390977
+2022-02-28 23:53:03 - Rejecting null hypothesis: OneClassSVM is better than DBSCAN
+2022-02-28 23:53:03 - Best model for iSex mutual info: OneClassSVM
