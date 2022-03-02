@@ -29,7 +29,7 @@ def plot_clustering_association(points, labels, feature, axe):
             x = [point[0], center[0]]
             y = [point[1], center[1]]
 
-            axe.plot(x, y, '#e8e2c6', alpha=0.03, linewidth=2)
+            axe.plot(x, y, '#e8e2c6', alpha=0.022, linewidth=2)
 
     axe.set_axisbelow(True)
     axe.grid(True, linestyle='--')
@@ -37,7 +37,7 @@ def plot_clustering_association(points, labels, feature, axe):
     axe.set_xticklabels([])
 
     scatter = axe.scatter(points[:, 0], points[:, 1], c=feature, s=10, alpha=.4)
-    legend = axe.legend(*scatter.legend_elements(), loc='upper right', title='Class')
+    legend = axe.legend(*scatter.legend_elements(), loc='best', title='Class')
     axe.add_artist(legend)
 
 if dataset == 'census':
@@ -51,7 +51,7 @@ if dataset == 'census':
 
     fig, axs = plt.subplots(1, 2, figsize=(15, 5))
 
-    model = GaussianMixture(n_components=3)
+    model = KMeans(n_clusters=4)
     labels = model.fit_predict(X)
 
     plot_clustering_association(points, labels, sample_df['dAge'], axs[0])
@@ -61,6 +61,7 @@ if dataset == 'census':
     axs[1].set_title('K-Means clusters association with iYearwrk external feature')
 
     plt.savefig(f'plots/{dataset}/clustering_dAge_iYearwrk_association.png')
+    plt.savefig(f'plots/{dataset}/clustering_dAge_iYearwrk_association.svg')
 
 if dataset == 'shoppers':
     df = pd.read_csv('data/online-shoppers-intention.csv').astype(SHOPPERS_DATA_TYPES)
