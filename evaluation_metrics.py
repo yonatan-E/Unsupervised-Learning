@@ -45,7 +45,7 @@ if __name__ == '__main__':
         encoder = OneHotEncoder()
 
         silhouette_results_df = pd.DataFrame()
-        for _ in range(20):
+        for _ in range(30):
             logging.info(f'Running iteration {_}')
 
             X = encoder.fit_transform(df.sample(SAMPLE_SIZE)).toarray()

@@ -20,7 +20,7 @@ assert len(sys.argv) > 1
 dataset = sys.argv[1]
 save = len(sys.argv) > 2 and sys.argv[2] == '--save'
 
-NUM_ITERATIONS = 20
+NUM_ITERATIONS = 30
 
 if dataset == 'census':
     SAMPLE_SIZE = 20000
