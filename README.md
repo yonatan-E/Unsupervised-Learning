@@ -7,4 +7,5 @@ In order to do it, we compared different clustering methods in order to find the
 In addition, we reduced the dimension of the data in order to plot the data and the association between the clusters and the external variables. Finally, we searched for anomalies in the data and measured the association between the anomalies and the external variables.
 
 Paper written by Ilan Prais, Yonatan Ehrenreich and Itay Gradenwitz.
+
 Many thanks to Prof. Yoram Louzon for instructing us in this course.
