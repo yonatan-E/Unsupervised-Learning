@@ -27,7 +27,6 @@ save = len(sys.argv) > 2 and sys.argv[2] == '--save'
 NUM_ITERATIONS = 20
 
 if dataset == 'census':
-    SAMPLE_SIZE = 20000
     EXTERNAL_FEATURES = EXTERNAL_CENSUS_FEATURES
     MODELS = [
         GaussianMixture(n_components=3),
@@ -37,7 +36,6 @@ if dataset == 'census':
         AgglomerativeClustering(n_clusters=3),
     ]
 elif dataset == 'shoppers':
-    SAMPLE_SIZE = 1000
     EXTERNAL_FEATURES = EXTERNAL_SHOPPERS_FEATURES
     MODELS = [
         GaussianMixture(n_components=3),
