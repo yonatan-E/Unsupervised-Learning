@@ -9,3 +9,7 @@ In addition, we reduced the dimension of the data in order to plot the data and 
 Paper written by Ilan Prais, Yonatan Ehrenreich and Itay Gradenwitz.
 
 Many thanks to Prof. Yoram Louzon for instructing us in this course.
+
+Data-sets:  
+https://archive.ics.uci.edu/ml/datasets/US+Census+Data+%281990%29  
+https://archive-beta.ics.uci.edu/ml/datasets/online+shoppers+purchasing+intention+dataset
